@@ -21,6 +21,8 @@ public class corsConfig {
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("https://localhost:5173");
         config.addAllowedOrigin("https://localhost:5174");
+        config.addAllowedOrigin("https://dashboard-front-five.vercel.app");
+        config.addAllowedOrigin("https://buensaborbackend.onrender.com");
         config.addAllowedOrigin("https://localhost:8080");
         config.addAllowedHeader("*"); // Permitir todos los encabezados
         config.addAllowedMethod("*"); // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
