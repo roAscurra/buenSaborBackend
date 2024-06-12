@@ -30,6 +30,13 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
 
     @Autowired
     private ArticuloInsumoService articuloInsumoService;
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<ArticuloInsumo>> obtenerInsumosPorSucursalYParaElaborar(
+            @PathVariable Long idSucursal
+    ) {
+        List<ArticuloInsumo> insumos = articuloInsumoService.insumos(idSucursal);
+        return ResponseEntity.ok(insumos);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ArticuloInsumoFullDto> getById(@PathVariable Long id){

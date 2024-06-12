@@ -2,6 +2,7 @@ package com.entidades.buenSabor.business.facade;
 
 import com.entidades.buenSabor.business.facade.Base.BaseFacade;
 import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,6 @@ public interface ArticuloInsumoFacade extends BaseFacade<ArticuloInsumoFullDto,L
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
     ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad);
+    List<ArticuloInsumo> insumos(Long idSucursal);
 
 }
