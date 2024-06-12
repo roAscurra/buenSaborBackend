@@ -37,8 +37,6 @@ public class BuenSaborApplication {
 		SpringApplication.run(BuenSaborApplication.class, args);
 		logger.info("Estoy activo en el main");
 	}
-
-
 	@Bean
 	@Transactional
 	CommandLineRunner init() {
@@ -46,5 +44,4 @@ public class BuenSaborApplication {
 			logger.info("----------------ESTOY----FUNCIONANDO---------------------");
 		};
 	}
-
 }
