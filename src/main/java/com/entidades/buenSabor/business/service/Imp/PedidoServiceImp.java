@@ -164,10 +164,20 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
     }
 
     @Override
+    public List<Object[]> getRankingInsumo() {
+        return pedidoRepository.getRankingInsumos();
+    }
+
+    @Override
     public List<Object[]> getCantidadPedidosPorCliente(Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
         return pedidoRepository.getCantidadPedidosPorCliente(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+    }
+
+    @Override
+    public List<Object[]> getCantidadPedidosPorCliente() {
+        return pedidoRepository.getCantidadPedidosPorCliente();
     }
 
     @Override
@@ -178,10 +188,20 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
     }
 
     @Override
+    public List<Object[]> getIngresos() {
+        return pedidoRepository.getIngresos();
+    }
+
+    @Override
     public List<Object[]> getGanancias(Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
         return pedidoRepository.getGanancias(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+    }
+
+    @Override
+    public List<Object[]> getGanancias() {
+        return pedidoRepository.getGanancias();
     }
 
     @Override
