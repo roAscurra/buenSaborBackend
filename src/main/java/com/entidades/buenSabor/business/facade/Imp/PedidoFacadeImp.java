@@ -34,6 +34,9 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
     public List<PedidoFullDto> findByClienteId(Long idCliente) {
         return this.pedidoService.findByClienteId(idCliente);
     }
+    public List<PedidoFullDto> pedidosSucursal(Long idSucursal) {
+        return this.pedidoService.pedidosSucursal(idSucursal);
+    }
     public PedidoFacadeImp(BaseService<Pedido, Long> baseService, BaseMapper<Pedido, PedidoFullDto> baseMapper, PedidoService pedidoService) {
         super(baseService, baseMapper);
         this.pedidoService = pedidoService;

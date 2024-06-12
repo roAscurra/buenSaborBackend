@@ -36,7 +36,15 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     private PedidoFacade pedidoFacade;
 
     public PedidoController(PedidoFacadeImp facade) {super (facade); }
-
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<PedidoFullDto>> pedidosSucursal(@PathVariable Long idSucursal) {
+        List<PedidoFullDto> pedidos = pedidoFacade.pedidosSucursal(idSucursal);
+        if (pedidos != null && !pedidos.isEmpty()) {
+            return ResponseEntity.ok(pedidos);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<PedidoFullDto>> getPedidosByCliente(@PathVariable Long clienteId) {
         List<PedidoFullDto> pedidos = pedidoFacade.findByClienteId(clienteId);

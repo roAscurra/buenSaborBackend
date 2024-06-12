@@ -4,6 +4,9 @@ import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.domain.entities.*;
+import com.entidades.buenSabor.repositories.ArticuloInsumoRepository;
+import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
+import com.entidades.buenSabor.repositories.ArticuloManufacturadoRepository;
 import com.entidades.buenSabor.repositories.ImagenArticuloRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +16,100 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
-
 @Service
 public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManufacturado, Long> implements ArticuloManufacturadoService {
     @Autowired
     ImagenArticuloRepository imagenArticuloRepository;
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
+    @Autowired
+    private ArticuloInsumoRepository articuloInsumoRepository;
+    @Autowired
+    private ArticuloManufacturadoRepository articuloManufacturadoRepository;
+    @Autowired
+    private ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+    @Override
+    public ArticuloManufacturado create(ArticuloManufacturado request) {
+        // Validación y persistencia de los detalles
+        Set<ArticuloManufacturadoDetalle> detalles = request.getArticuloManufacturadoDetalles();
+        Set<ArticuloManufacturadoDetalle> detallesPersistidos = new HashSet<>();
+
+        if (detalles != null && !detalles.isEmpty()) {
+            for (ArticuloManufacturadoDetalle detalle : detalles) {
+                ArticuloInsumo articuloInsumo = detalle.getArticuloInsumo();
+                if (articuloInsumo == null || articuloInsumo.getId() == null) {
+                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                }
+                articuloInsumo = articuloInsumoRepository.findById(detalle.getArticuloInsumo().getId())
+                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticuloInsumo().getId() + " inexistente"));
+                detalle.setArticuloInsumo(articuloInsumo);
+                ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(detalle);
+                detallesPersistidos.add(savedDetalle);
+            }
+            request.setArticuloManufacturadoDetalles(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("El articuloManufacturado debe contener un detalle o más.");
+        }
+
+        return articuloManufacturadoRepository.save(request);
+    }
+    @Override
+    public ArticuloManufacturado update(ArticuloManufacturado request, Long id) {
+        // Verificar si el artículo manufacturado existe
+        ArticuloManufacturado existingArticulo = articuloManufacturadoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Artículo manufacturado con id " + id + " inexistente"));
+
+        // Validación y persistencia de los detalles
+        Set<ArticuloManufacturadoDetalle> nuevosDetalles = request.getArticuloManufacturadoDetalles();
+        Set<ArticuloManufacturadoDetalle> detallesPersistidos = new HashSet<>();
+
+        if (nuevosDetalles != null && !nuevosDetalles.isEmpty()) {
+            for (ArticuloManufacturadoDetalle nuevoDetalle : nuevosDetalles) {
+                ArticuloInsumo articuloInsumo = nuevoDetalle.getArticuloInsumo();
+                if (articuloInsumo == null || articuloInsumo.getId() == null) {
+                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                }
+                articuloInsumo = articuloInsumoRepository.findById(nuevoDetalle.getArticuloInsumo().getId())
+                        .orElseThrow(() -> new RuntimeException("Artículo con id " + nuevoDetalle.getArticuloInsumo().getId() + " inexistente"));
+                nuevoDetalle.setArticuloInsumo(articuloInsumo);
+
+                if (nuevoDetalle.getId() == 0) {
+                    // Es un nuevo detalle, agregarlo
+                    ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(nuevoDetalle);
+                    detallesPersistidos.add(savedDetalle);
+                } else {
+                    // Es un detalle existente, actualizarlo
+                    ArticuloManufacturadoDetalle existingDetalle = articuloManufacturadoDetalleRepository.findById(nuevoDetalle.getId())
+                            .orElseThrow(() -> new RuntimeException("Detalle con id " + nuevoDetalle.getId() + " inexistente"));
+                    existingDetalle.setCantidad(nuevoDetalle.getCantidad());
+                    existingDetalle.setArticuloInsumo(articuloInsumo); // actualizar el artículo insumo
+                    ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(existingDetalle);
+                    detallesPersistidos.add(savedDetalle);
+                }
+            }
+
+            // Eliminar detalles que ya no están en la solicitud
+            Set<ArticuloManufacturadoDetalle> existingDetalles = existingArticulo.getArticuloManufacturadoDetalles();
+            for (ArticuloManufacturadoDetalle existingDetalle : existingDetalles) {
+                if (nuevosDetalles.stream().noneMatch(d -> d.getId() != null && d.getId().equals(existingDetalle.getId()))) {
+                    articuloManufacturadoDetalleRepository.delete(existingDetalle);
+                }
+            }
+
+            request.setArticuloManufacturadoDetalles(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("El articuloManufacturado debe contener un detalle o más.");
+        }
+
+        // Actualizar los campos del artículo manufacturado existente
+        existingArticulo.setDenominacion(request.getDenominacion());
+        existingArticulo.setDescripcion(request.getDescripcion());
+        existingArticulo.setPrecioVenta(request.getPrecioVenta());
+        existingArticulo.setTiempoEstimadoMinutos(request.getTiempoEstimadoMinutos());
+        existingArticulo.setArticuloManufacturadoDetalles(detallesPersistidos);
+
+        return articuloManufacturadoRepository.save(existingArticulo);
+    }
 
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByArticuloManufacturadoId(Long id) {

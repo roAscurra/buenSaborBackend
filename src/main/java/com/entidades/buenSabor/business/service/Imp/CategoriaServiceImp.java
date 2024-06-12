@@ -1,7 +1,9 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.CategoriaMapper;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CategoriaService;
+import com.entidades.buenSabor.domain.dto.categoria.CategoriaCreateDto;
 import com.entidades.buenSabor.domain.entities.Categoria;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import com.entidades.buenSabor.domain.entities.Sucursal;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,6 +26,19 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
     @Autowired
     SucursalRepository sucursalRepository;
 
+    @Autowired
+    CategoriaMapper categoriaMapper;
+    @Override
+    public List<CategoriaCreateDto> categoriaSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }
     @Override
     public Categoria create(Categoria request) {
         // Guardar la instancia de Categoria en la base de datos para asegurarse de que esté gestionada por el EntityManager

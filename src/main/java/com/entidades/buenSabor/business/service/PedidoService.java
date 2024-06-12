@@ -27,5 +27,6 @@ public interface PedidoService extends BaseService<Pedido, Long> {
     List<Pedido> getPedidosFiltrados(String rol);
 
     List<PedidoFullDto> findByClienteId(Long idCliente);
+    List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
 }

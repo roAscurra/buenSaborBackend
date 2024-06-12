@@ -6,6 +6,7 @@ import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.SucursalService;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
 import com.entidades.buenSabor.domain.entities.Sucursal;
 import org.slf4j.Logger;
@@ -26,7 +27,9 @@ public class SucursalFacadeImp extends BaseFacadeImp<Sucursal, SucursalFullDto,L
     public SucursalFacadeImp(BaseService<Sucursal, Long> baseService, BaseMapper<Sucursal, SucursalFullDto> baseMapper) {
         super(baseService, baseMapper);
     }
-
+    public List<SucursalFullDto> sucursalEmpresa(Long idEmpresa) {
+        return this.sucursalService.sucursalEmpresa(idEmpresa);
+    }
 
     @Override
     public SucursalFullDto createSucursal(SucursalFullDto dto) {

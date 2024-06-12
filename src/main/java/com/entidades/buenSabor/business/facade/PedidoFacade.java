@@ -28,5 +28,6 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
     List<Pedido> getPedidosFiltrados(String rol);
 
     List<PedidoFullDto> findByClienteId(Long clienteId);
+    List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
 }
