@@ -66,7 +66,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PedidoFullDto> create(@RequestBody PedidoFullDto entity){
         return super.create(entity);
     }
