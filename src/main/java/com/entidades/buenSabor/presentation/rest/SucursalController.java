@@ -3,7 +3,10 @@ package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.facade.Imp.SucursalFacadeImp;
 
+import com.entidades.buenSabor.business.facade.PedidoFacade;
+import com.entidades.buenSabor.business.facade.Sucursalfacade;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.provincia.ProvinciaFullDto;
 import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
 
@@ -11,6 +14,7 @@ import com.entidades.buenSabor.domain.entities.Sucursal;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +30,17 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalFull
     public SucursalController(SucursalFacadeImp facade) {
         super(facade);
     }
-
+    @Autowired
+    private Sucursalfacade sucursalfacade;
+    @GetMapping("/empresa/{idEmpresa}")
+    public ResponseEntity<List<SucursalFullDto>> sucursalEmpresa(@PathVariable Long idEmpresa) {
+        List<SucursalFullDto> sucursales = sucursalfacade.sucursalEmpresa(idEmpresa);
+        if (sucursales != null && !sucursales.isEmpty()) {
+            return ResponseEntity.ok(sucursales);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @Override
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
