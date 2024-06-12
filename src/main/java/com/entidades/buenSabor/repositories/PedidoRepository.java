@@ -39,6 +39,25 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     @Query("SELECT CONCAT(DAY (p.fechaPedido), '-', MONTH (p.fechaPedido), '-', YEAR(p.fechaPedido)) , SUM(p.total) - SUM(p.totalCosto) FROM Pedido p GROUP BY p.fechaPedido")
     List<Object[]> getGanancias(@Param("desde") LocalDate desde, @Param("hasta") LocalDate hasta);
 
+    @Query("SELECT dp.articulo, SUM(dp.cantidad)" +
+            "FROM Pedido p " +
+            "JOIN p.detallePedidos dp " +
+            "GROUP BY dp.articulo")
+    List<Object[]> getRankingInsumos();
+
+    @Query("""
+        SELECT c.email, COUNT(p) FROM Pedido p
+        JOIN p.cliente c
+        GROUP BY c.id
+    """)
+    List<Object[]> getCantidadPedidosPorCliente();
+
+    @Query("SELECT CONCAT(DAY (p.fechaPedido), '-', MONTH (p.fechaPedido), '-', YEAR(p.fechaPedido)) , SUM(p.total) FROM Pedido p GROUP BY p.fechaPedido")
+    List<Object[]> getIngresos();
+
+    @Query("SELECT CONCAT(DAY (p.fechaPedido), '-', MONTH (p.fechaPedido), '-', YEAR(p.fechaPedido)) , SUM(p.total) - SUM(p.totalCosto) FROM Pedido p GROUP BY p.fechaPedido")
+    List<Object[]> getGanancias();
+
     @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId")
     List<Pedido> findByClienteId(@Param("clienteId") Long clienteId);
 
