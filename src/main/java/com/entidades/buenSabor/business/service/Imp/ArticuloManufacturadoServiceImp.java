@@ -73,7 +73,7 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
                         .orElseThrow(() -> new RuntimeException("Artículo con id " + nuevoDetalle.getArticuloInsumo().getId() + " inexistente"));
                 nuevoDetalle.setArticuloInsumo(articuloInsumo);
 
-                if (nuevoDetalle.getId() == null) {
+                if (nuevoDetalle.getId() == 0) {
                     // Es un nuevo detalle, agregarlo
                     ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(nuevoDetalle);
                     detallesPersistidos.add(savedDetalle);
