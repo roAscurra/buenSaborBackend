@@ -11,6 +11,7 @@ import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.DetallePedido;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
@@ -221,5 +222,6 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
     public List<Pedido> getPedidosFiltrados(String rol) {
         return pedidoService.getPedidosFiltrados(rol);
     }
+
 
 }

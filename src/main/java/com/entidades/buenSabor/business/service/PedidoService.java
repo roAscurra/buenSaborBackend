@@ -6,6 +6,7 @@ import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.DetallePedido;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 
 import java.time.Instant;

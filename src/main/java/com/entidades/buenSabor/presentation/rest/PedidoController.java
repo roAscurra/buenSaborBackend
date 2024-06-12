@@ -7,6 +7,7 @@ import com.entidades.buenSabor.business.service.PedidoService;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -201,7 +202,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("/filtrado")
-    @PreAuthorize("")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
     public ResponseEntity<List<Pedido>> getPedidosFiltrados(@RequestParam String rol) {
         List<Pedido> pedidos = this.facade.getPedidosFiltrados(rol);
         return ResponseEntity.ok(pedidos);

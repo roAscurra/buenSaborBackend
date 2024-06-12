@@ -4,6 +4,7 @@ import com.entidades.buenSabor.business.facade.Base.BaseFacade;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.time.Instant;
