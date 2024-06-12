@@ -1,8 +1,11 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.PromocionMapper;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.business.service.PromocionService;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
+import com.entidades.buenSabor.domain.dto.promocion.PromocionFullDto;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.repositories.ImagenPromocionRepository;
 import com.entidades.buenSabor.repositories.PromocionRepository;
@@ -27,7 +30,13 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
 
     @Autowired
     SucursalRepository sucursalRepository;
-
+    @Autowired
+    PromocionMapper promocionMapper;
+    @Override
+    public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
+        List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);
+        return promocionMapper.promocionesToPromocionFullDto(promociones);
+    }
     @Override
     public Promocion create(Promocion request) {
         // Guardar la instancia de Promocion en la base de datos para asegurarse de que esté gestionada por el EntityManager
