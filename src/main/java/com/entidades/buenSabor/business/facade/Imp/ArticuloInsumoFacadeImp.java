@@ -6,6 +6,7 @@ import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.service.ArticuloInsumoService;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,10 @@ public class ArticuloInsumoFacadeImp extends BaseFacadeImp<ArticuloInsumo, Artic
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByInsumoId(Long id) {
         return articuloInsumoService.getAllImagesByInsumoId(id);
     }
-
+    @Override
+    public List<ArticuloInsumo> insumos(Long idSucursal) {
+        return this.articuloInsumoService.insumos(idSucursal);
+    }
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long id) {
         return articuloInsumoService.uploadImages(files,id);
