@@ -45,5 +45,11 @@ public class PreferenceMPServiceImpl implements PreferenceMPService {
     public void delete(String id) {
         preferenceMPRepository.deleteById(id);
     }
+
+    @Override
+    public PreferenceMP obtenerPorIdPedido(Long idPedido) {
+        return preferenceMPRepository.findByIdPedido(idPedido)
+                .orElseThrow(() -> new RuntimeException("PreferenceMP no encontrado para el pedido"));
+    }
 }
 

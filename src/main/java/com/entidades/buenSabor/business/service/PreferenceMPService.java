@@ -15,4 +15,6 @@ public interface PreferenceMPService{
     PreferenceMP update(PreferenceMP preferenceMP);
 
     void delete(String id);
+
+    PreferenceMP obtenerPorIdPedido(Long idPedido);
 }
