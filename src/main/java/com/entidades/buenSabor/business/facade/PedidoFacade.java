@@ -25,5 +25,6 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
     List<PedidoFullDto> findByClienteId(Long clienteId);
+    List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
 }

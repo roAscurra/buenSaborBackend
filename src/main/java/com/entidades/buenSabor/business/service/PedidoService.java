@@ -24,5 +24,6 @@ public interface PedidoService extends BaseService<Pedido, Long> {
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
     List<PedidoFullDto> findByClienteId(Long idCliente);
+    List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
 }
