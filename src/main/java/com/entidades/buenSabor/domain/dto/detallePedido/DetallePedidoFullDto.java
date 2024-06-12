@@ -2,8 +2,6 @@ package com.entidades.buenSabor.domain.dto.detallePedido;
 
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.dto.articulo.ArticuloDto;
-import com.entidades.buenSabor.domain.dto.articulo.ArticuloShortDto;
-import com.entidades.buenSabor.domain.entities.Articulo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

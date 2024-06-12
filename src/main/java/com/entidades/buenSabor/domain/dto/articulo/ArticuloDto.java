@@ -2,9 +2,7 @@ package com.entidades.buenSabor.domain.dto.articulo;
 
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.dto.categoria.CategoriaCreateDto;
-import com.entidades.buenSabor.domain.dto.categoria.CategoriaShortDto;
 import com.entidades.buenSabor.domain.dto.imagen.ImagenDto;
-import com.entidades.buenSabor.domain.dto.sucursal.SucursalShortDto;
 import com.entidades.buenSabor.domain.dto.unidadMedida.UnidadMedidaFullDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
