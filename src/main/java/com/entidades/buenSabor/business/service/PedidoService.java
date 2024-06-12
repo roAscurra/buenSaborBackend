@@ -6,6 +6,7 @@ import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.DetallePedido;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 
 import java.time.Instant;
@@ -23,6 +24,8 @@ public interface PedidoService extends BaseService<Pedido, Long> {
     List<Object[]> getGanancias();
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
+    List<Pedido> getPedidosFiltrados(String rol);
+
     List<PedidoFullDto> findByClienteId(Long idCliente);
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 

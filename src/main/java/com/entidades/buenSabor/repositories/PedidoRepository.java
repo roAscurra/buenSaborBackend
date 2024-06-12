@@ -4,6 +4,7 @@ import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.Articulo;
 import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.Pedido;
+import com.entidades.buenSabor.domain.enums.Estado;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.jpa.repository.Query;
@@ -62,5 +63,10 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<Pedido> findByClienteId(@Param("clienteId") Long clienteId);
     @Query("SELECT p FROM Pedido p WHERE p.sucursal.id = :idSucursal")
     List<Pedido> pedidosSucursal(@Param("idSucursal") Long idSucursal);
+
+    List<Pedido> findByEstadoIn(List<Estado> estados);
+
+    List<Pedido> findByEstado(Estado estado);
+
 
 }

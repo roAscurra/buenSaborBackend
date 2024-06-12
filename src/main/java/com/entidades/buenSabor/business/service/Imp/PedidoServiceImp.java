@@ -6,6 +6,7 @@ import com.entidades.buenSabor.business.service.PedidoService;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
+import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements PedidoService {
@@ -213,4 +211,24 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         pedido.setEstado(nuevoEstado);
         return pedidoRepository.save(pedido);
     }
+
+    @Override
+    public List<Pedido> getPedidosFiltrados(String rol) {
+        switch (rol) {
+            case "CAJERO":
+                return pedidoRepository.findByEstadoIn(Arrays.asList(
+                        Estado.PENDIENTE, Estado.TERMINADO, Estado.ENTREGADO, Estado.FACTURADO));
+            case "COCINERO":
+                return pedidoRepository.findByEstado(Estado.PREPARACION);
+            case "DELIVERY":
+                return pedidoRepository.findByEstado(Estado.EN_DELIVERY);
+            case "ADMIN":
+                return pedidoRepository.findAll(); // El admin puede ver todos los pedidos
+            default:
+                return new ArrayList<>();
+        }
+    }
+
+
+
 }

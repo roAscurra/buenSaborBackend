@@ -46,4 +46,10 @@ public class FacturaController extends BaseControllerImp<Factura, FacturaFullDto
         return super.deleteById(id);
     }
 
+    @PostMapping("/crear/{pedidoId}")
+    public ResponseEntity<Factura> crearFactura(@PathVariable Long pedidoId) {
+        Factura factura = this.facade.crearFactura(pedidoId);
+        return ResponseEntity.ok(factura);
+    }
+
 }
