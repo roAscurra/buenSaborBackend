@@ -1,10 +1,14 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.PedidoMapper;
+import com.entidades.buenSabor.business.mapper.SucursalMapper;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.business.service.SucursalService;
+import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
 import com.entidades.buenSabor.domain.entities.ImagenEmpresa;
 import com.entidades.buenSabor.domain.entities.ImagenSucursal;
+import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.Sucursal;
 import com.entidades.buenSabor.repositories.*;
 import jakarta.transaction.Transactional;
@@ -33,8 +37,14 @@ public class SucursalServiceImp extends BaseServiceImp<Sucursal,Long> implements
     ImagenSucursalRepository imagenSucursalRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private SucursalMapper sucursalMapper;
     private static final Logger logger = LoggerFactory.getLogger(BaseServiceImp.class);
-
+    @Override
+    public List<SucursalFullDto> sucursalEmpresa(Long idEmpresa) {
+        List<Sucursal> sucursales = this.sucursalRepository.sucursalEmpresa(idEmpresa);
+        return sucursalMapper.sucursalesToSucursalFullDto(sucursales);
+    }
     @Override
     @Transactional
     public Sucursal guardarSucursal(Sucursal sucursal) {

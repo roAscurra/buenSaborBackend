@@ -1,7 +1,9 @@
 package com.entidades.buenSabor.business.facade;
 
 import com.entidades.buenSabor.business.facade.Base.BaseFacade;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
+import com.entidades.buenSabor.domain.entities.Sucursal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +20,6 @@ public interface Sucursalfacade extends BaseFacade<SucursalFullDto, Long> {
     ResponseEntity<String> uploadImages(MultipartFile[] files, Long id);
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
+    List<SucursalFullDto> sucursalEmpresa(Long idEmpresa);
+
 }
