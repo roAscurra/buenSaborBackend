@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.entities;
 
 import com.entidades.buenSabor.domain.enums.Rol;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -28,5 +29,6 @@ public class Empleado extends Base{
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "sucursal_id")
+    @JsonBackReference
     private Sucursal sucursal;
 }

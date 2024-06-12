@@ -1,9 +1,7 @@
 package com.entidades.buenSabor.domain.entities;
 
 import com.entidades.buenSabor.domain.enums.Rol;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
@@ -29,4 +27,9 @@ public class Usuario extends Base{
 //    @ToString.Exclude
 //    @Builder.Default
 //    private Set<Pedido> pedidos= new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JoinColumn(name = "empleado_id")
+    private Empleado empleado;
 }

@@ -16,4 +16,28 @@ public class UsuarioDto extends BaseDto {
     private String email;
     private String password;
     private Rol rol;
+    private EmpleadoShortDto empleado;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
+    @Getter
+    public static class EmpleadoShortDto {
+        private Rol tipoEmpleado;
+        private SucursalShortDto sucursal;
+
+
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
+    @Getter
+    public static class SucursalShortDto {
+        private Long id;
+    }
 }
+
+
+
+
