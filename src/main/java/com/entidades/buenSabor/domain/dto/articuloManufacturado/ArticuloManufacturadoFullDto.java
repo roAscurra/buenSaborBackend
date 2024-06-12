@@ -2,9 +2,7 @@ package com.entidades.buenSabor.domain.dto.articuloManufacturado;
 
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.dto.articuloManufacturadoDetalle.ArticuloManufacturadoDetalleFullDto;
-import com.entidades.buenSabor.domain.dto.articuloManufacturadoDetalle.ArticuloManufacturadoDetalleShorDto;
 import com.entidades.buenSabor.domain.dto.categoria.CategoriaFullDto;
-import com.entidades.buenSabor.domain.dto.categoria.CategoriaShortDto;
 import com.entidades.buenSabor.domain.dto.imagen.ImagenDto;
 import com.entidades.buenSabor.domain.dto.unidadMedida.UnidadMedidaFullDto;
 import lombok.AllArgsConstructor;
