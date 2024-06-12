@@ -44,7 +44,10 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         List<Pedido> pedidos = this.pedidoRepository.findByClienteId(clienteId);
         return pedidoMapper.pedidosToPedidoFullDtos(pedidos);
     }
-
+    public List<PedidoFullDto> pedidosSucursal(Long idSucursal) {
+        List<Pedido> pedidos = this.pedidoRepository.pedidosSucursal(idSucursal);
+        return pedidoMapper.pedidosToPedidoFullDtos(pedidos);
+    }
     @Override
     public Pedido create(Pedido request) {
         if (request.getSucursal() == null) {

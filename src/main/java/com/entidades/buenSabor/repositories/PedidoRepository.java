@@ -60,5 +60,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
 
     @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId")
     List<Pedido> findByClienteId(@Param("clienteId") Long clienteId);
+    @Query("SELECT p FROM Pedido p WHERE p.sucursal.id = :idSucursal")
+    List<Pedido> pedidosSucursal(@Param("idSucursal") Long idSucursal);
 
 }
