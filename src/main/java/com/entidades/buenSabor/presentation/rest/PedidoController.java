@@ -75,7 +75,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("ranking/insumos/excel")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin("*")
     public ResponseEntity<byte[]> downloadRankingInsumosExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
             SXSSFWorkbook libroExcel = this.facade.getRankingInsumo(desde, hasta);
@@ -96,8 +96,15 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/pedidos/cliente/excel")
+    @GetMapping("ranking/insumos/data")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin("*")
+    public ResponseEntity<List<Object[]>> downloadRankingInsumosData() throws SQLException {
+        return ResponseEntity.ok(this.facade.getRankingInsumoData());
+    }
+
+    @GetMapping("ranking/pedidos/cliente/excel")
+    @CrossOrigin("*")
     public ResponseEntity<byte[]> downloadCantidadPedidosPorClienteExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
             SXSSFWorkbook libroExcel = this.facade.getCantidadDePedidosPorCliente(desde, hasta);
@@ -118,8 +125,15 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/ingresos/excel")
+    @GetMapping("ranking/pedidos/cliente/data")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin("*")
+    public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData() throws SQLException {
+        return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData());
+    }
+
+    @GetMapping("ranking/ingresos/excel")
+    @CrossOrigin("*")
     public ResponseEntity<byte[]> downloadIngresosExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
             SXSSFWorkbook libroExcel = this.facade.getIngresos(desde, hasta);
@@ -140,8 +154,15 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/ganancias/excel")
+    @GetMapping("ranking/ingresos/data")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin("*")
+    public ResponseEntity<List<Object[]>> downloadIngresosData() throws SQLException {
+        return ResponseEntity.ok(this.facade.getIngresosData());
+    }
+
+    @GetMapping("ranking/ganancias/excel")
+    @CrossOrigin("*")
     public ResponseEntity<byte[]> downloadGananciasExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
             SXSSFWorkbook libroExcel = this.facade.getGanancias(desde, hasta);
@@ -160,6 +181,13 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("ranking/ganancias/data")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin("*")
+    public ResponseEntity<List<Object[]>> downloadGananciasData() throws SQLException {
+        return ResponseEntity.ok(this.facade.getGananciasData());
     }
 
     @PutMapping("/{pedidoId}/estado")

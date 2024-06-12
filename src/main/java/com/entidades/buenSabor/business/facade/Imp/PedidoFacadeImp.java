@@ -38,6 +38,12 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         this.pedidoService = pedidoService;
     }
 
+    public List<Object[]> getRankingInsumoData() {
+        return this.pedidoService.getRankingInsumo()
+                .stream().map((value) -> new Object[]{((Articulo) value[0]).getDenominacion(), value[1]})
+                .toList();
+    }
+
     public SXSSFWorkbook getRankingInsumo(Instant desde, Instant hasta) {
 
         // Se crea el libro
@@ -75,6 +81,10 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
             }
         }
         return libro;
+    }
+
+    public List<Object[]> getCantidadDePedidosPorData() {
+        return this.pedidoService.getCantidadPedidosPorCliente();
     }
 
     public SXSSFWorkbook getCantidadDePedidosPorCliente(Instant desde, Instant hasta) {
@@ -116,6 +126,10 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         return libro;
     }
 
+    public List<Object[]> getIngresosData() {
+        return this.pedidoService.getIngresos();
+    }
+
     public SXSSFWorkbook getIngresos(Instant desde, Instant hasta) {
 
         // Se crea el libro
@@ -153,6 +167,10 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
             }
         }
         return libro;
+    }
+
+    public List<Object[]> getGananciasData() {
+        return this.pedidoService.getGanancias();
     }
 
     public SXSSFWorkbook getGanancias(Instant desde, Instant hasta) {

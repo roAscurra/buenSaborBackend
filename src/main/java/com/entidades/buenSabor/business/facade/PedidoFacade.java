@@ -13,6 +13,14 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
 
     SXSSFWorkbook getRankingInsumo(Instant desde, Instant hasta);
 
+    List<Object[]> getRankingInsumoData();
+
+    List<Object[]> getCantidadDePedidosPorData();
+
+    List<Object[]> getIngresosData();
+
+    List<Object[]> getGananciasData();
+
     SXSSFWorkbook getCantidadDePedidosPorCliente(Instant desde, Instant hasta);
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);

@@ -3,6 +3,7 @@ package com.entidades.buenSabor.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,6 +46,14 @@ public class SecurityConfiguration {
                 .cors(withDefaults()) //por defecto spring va a buscar un bean con el nombre "corsConfigurationSource".
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers(HttpMethod.GET, "/articuloManufacturado/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/articuloInsumo/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/pais/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/provincia/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/localidad/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/pedido/ranking/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
