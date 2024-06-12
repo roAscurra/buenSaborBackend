@@ -5,6 +5,7 @@ import com.entidades.buenSabor.business.facade.PromocionFacade;
 import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.business.service.PromocionService;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.promocion.PromocionFullDto;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionFullDt
     }
     @Autowired
     PromocionService promocionService;
+    public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
+        return this.promocionService.promocionSucursal(idSucursal);
+    }
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByPromocionId(Long id) {
         return promocionService.getAllImagesByPromocionId(id);

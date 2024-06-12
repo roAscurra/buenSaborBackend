@@ -1,10 +1,14 @@
 package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.facade.Imp.PromocionFacadeImp;
+import com.entidades.buenSabor.business.facade.PedidoFacade;
+import com.entidades.buenSabor.business.facade.PromocionFacade;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.promocion.PromocionFullDto;
+import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
 import com.entidades.buenSabor.domain.entities.Promocion;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +22,17 @@ import java.util.List;
 public class PromocionController extends BaseControllerImp<Promocion, PromocionFullDto, Long, PromocionFacadeImp> {
 
     public PromocionController(PromocionFacadeImp facade) {super (facade); }
-
+    @Autowired
+    private PromocionFacade promocionFacade;
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<PromocionFullDto>> promocionSucursal(@PathVariable Long idSucursal) {
+        List<PromocionFullDto> promociones = promocionFacade.promocionSucursal(idSucursal);
+        if (promociones != null && !promociones.isEmpty()) {
+            return ResponseEntity.ok(promociones);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<PromocionFullDto> getById(@PathVariable Long id){
         return super.getById(id);
