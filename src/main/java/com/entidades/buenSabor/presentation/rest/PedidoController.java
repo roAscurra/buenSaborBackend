@@ -163,13 +163,20 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @PutMapping("/{pedidoId}/estado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado
     ) {
         Pedido pedidoActualizado = this.facade.cambiarEstado(pedidoId, nuevoEstado);
         return new ResponseEntity<>(pedidoActualizado, HttpStatus.OK);
+    }
+
+    @GetMapping("/filtrado")
+    @PreAuthorize("")
+    public ResponseEntity<List<Pedido>> getPedidosFiltrados(@RequestParam String rol) {
+        List<Pedido> pedidos = this.facade.getPedidosFiltrados(rol);
+        return ResponseEntity.ok(pedidos);
     }
 
 }

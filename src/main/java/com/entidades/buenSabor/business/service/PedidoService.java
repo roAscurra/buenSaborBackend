@@ -19,6 +19,8 @@ public interface PedidoService extends BaseService<Pedido, Long> {
     List<Object[]> getGanancias(Instant desde, Instant hasta);
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
+    List<Pedido> getPedidosFiltrados(String rol);
+
     List<PedidoFullDto> findByClienteId(Long idCliente);
 
 }

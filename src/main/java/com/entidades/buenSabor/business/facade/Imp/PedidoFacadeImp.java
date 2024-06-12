@@ -198,4 +198,10 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
     public Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado) {
         return pedidoService.cambiarEstado(pedidoId, nuevoEstado);
     }
+
+    @Override
+    public List<Pedido> getPedidosFiltrados(String rol) {
+        return pedidoService.getPedidosFiltrados(rol);
+    }
+
 }
