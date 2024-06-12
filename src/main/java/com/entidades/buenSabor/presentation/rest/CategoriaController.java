@@ -19,7 +19,10 @@ import java.util.List;
 public class CategoriaController extends BaseControllerImp<Categoria, CategoriaCreateDto, Long, CategoriaFacadeImp> {
 
     public CategoriaController(CategoriaFacadeImp facade) {super (facade); }
-
+    @GetMapping("/sucursal/{idSucursal}")
+    public List<CategoriaCreateDto> getCategoriasPorSucursal(@PathVariable Long idSucursal) {
+        return this.facade.categoriaSucursal(idSucursal);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaCreateDto> getById(@PathVariable Long id){
         return super.getById(id);
