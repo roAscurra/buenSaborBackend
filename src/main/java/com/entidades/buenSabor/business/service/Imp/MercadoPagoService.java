@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.entities.PreferenceMP;
 import com.entidades.buenSabor.repositories.PreferenceMPRepository;
@@ -26,7 +27,7 @@ public class MercadoPagoService {
     public MercadoPagoService(PreferenceMPRepository preferenceRepository) {
         this.preferenceMPRepository = preferenceRepository;
     }
-    public PreferenceMP createPreference(Pedido pedido) {
+    public PreferenceMP createPreference(PedidoFullDto pedido) {
         try {
             MercadoPagoConfig.setAccessToken("TEST-5520850756347883-052115-87619eea0fe6198035d24d9a90cee463-1070043938");
 
@@ -42,7 +43,7 @@ public class MercadoPagoService {
             List<PreferenceItemRequest> items = new ArrayList<>();
             items.add(itemRequest);
 
-            String successUrl = "http://localhost:5173/carrito/1?idPedido=" + pedido.getId();
+            String successUrl = "http://localhost:5173/carrito/1?i=" + pedido.getId();
 
             PreferenceBackUrlsRequest backURL = PreferenceBackUrlsRequest.builder()
                     .success(successUrl)

@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -22,5 +23,6 @@ public class PreferenceMP implements Serializable {
     private Long idPedido;
     private int statusCode;
     private OffsetDateTime fechaCreacion;
+    @JsonProperty("totalPedido")
     private BigDecimal total;
 }
