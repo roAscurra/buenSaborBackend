@@ -8,14 +8,22 @@ import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.*;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Table;
+import com.lowagie.text.pdf.PdfDocument;
+import com.lowagie.text.pdf.PdfWriter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -217,11 +225,11 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         switch (rol) {
             case "CAJERO":
                 return pedidoRepository.findByEstadoIn(Arrays.asList(
-                        Estado.PENDIENTE, Estado.TERMINADO, Estado.ENTREGADO, Estado.FACTURADO));
+                        Estado.PENDIENTE, Estado.TERMINADO, Estado.FACTURADO, Estado.EN_DELIVERY));
             case "COCINERO":
                 return pedidoRepository.findByEstado(Estado.PREPARACION);
-            case "DELIVERY":
-                return pedidoRepository.findByEstado(Estado.EN_DELIVERY);
+//            case "DELIVERY":
+//                return pedidoRepository.findByEstado(Estado.EN_DELIVERY);
             case "ADMIN":
                 return pedidoRepository.findAll(); // El admin puede ver todos los pedidos
             default:
@@ -229,6 +237,10 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         }
     }
 
-
+    @Override
+    public Pedido getPedidoById(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+    }
 
 }

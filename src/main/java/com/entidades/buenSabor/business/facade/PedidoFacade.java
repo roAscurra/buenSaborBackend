@@ -7,6 +7,7 @@ import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.List;
 
@@ -30,4 +31,5 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
     List<PedidoFullDto> findByClienteId(Long clienteId);
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
+    ByteArrayOutputStream generatePedidoPDF(Long pedidoId);
 }
