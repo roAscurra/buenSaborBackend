@@ -61,9 +61,9 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     @Query("SELECT CONCAT(DAY (p.fechaPedido), '-', MONTH (p.fechaPedido), '-', YEAR(p.fechaPedido)) , SUM(p.total) - SUM(p.totalCosto) FROM Pedido p WHERE p.sucursal.id = :sucursalId GROUP BY p.fechaPedido")
     List<Object[]> getGanancias(@Param("sucursalId") Long sucursalId);
 
-    @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId")
+    @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId AND p.eliminado = false")
     List<Pedido> findByClienteId(@Param("clienteId") Long clienteId);
-    @Query("SELECT p FROM Pedido p WHERE p.sucursal.id = :idSucursal")
+    @Query("SELECT p FROM Pedido p WHERE p.sucursal.id = :idSucursal AND p.eliminado = false")
     List<Pedido> pedidosSucursal(@Param("idSucursal") Long idSucursal);
 
     List<Pedido> findByEstadoIn(List<Estado> estados);

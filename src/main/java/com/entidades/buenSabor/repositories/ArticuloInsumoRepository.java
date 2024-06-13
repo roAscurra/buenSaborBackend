@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface ArticuloInsumoRepository extends BaseRepository<ArticuloInsumo,Long> {
-    @Query("SELECT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal AND p.esParaElaborar = true")
+    @Query("SELECT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal AND p.esParaElaborar = true AND p.eliminado = false")
     List<ArticuloInsumo> insumosParaElaborar(@Param("idSucursal") Long idSucursal);
-    @Query("SELECT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal")
+    @Query("SELECT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal AND p.eliminado = false")
     List<ArticuloInsumo> insumos(@Param("idSucursal") Long idSucursal);
 }
