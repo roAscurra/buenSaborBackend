@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.business.service;
 
 import com.entidades.buenSabor.business.service.Base.BaseService;
+import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.domain.entities.Pedido;
@@ -12,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ArticuloInsumoService extends BaseService<ArticuloInsumo, Long> {
-    List<ArticuloInsumo> insumos(Long idSucursal);
+    List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal);
+    List<ArticuloInsumoFullDto> insumos(Long idSucursal);
+
     //Imagenes
     // Método para obtener todas las imágenes almacenadas
     ResponseEntity<List<Map<String, Object>>> getAllImagesByInsumoId(Long id);

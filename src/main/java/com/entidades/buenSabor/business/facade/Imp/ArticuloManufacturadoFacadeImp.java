@@ -5,6 +5,7 @@ import com.entidades.buenSabor.business.facade.Base.BaseFacadeImp;
 import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseService;
+import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.entidades.buenSabor.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
     }
     @Autowired
     ArticuloManufacturadoService articuloManufacturadoService;
+    @Override
+    public List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal) {
+        return this.articuloManufacturadoService.manufacturados(idSucursal);
+    }
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByArticuloManufacturadoId(Long id) {
         return articuloManufacturadoService.getAllImagesByArticuloManufacturadoId(id);

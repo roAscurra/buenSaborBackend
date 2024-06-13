@@ -1,8 +1,11 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.ArticuloManufacturadoMapper;
 import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
+import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
+import com.entidades.buenSabor.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.repositories.ArticuloInsumoRepository;
 import com.entidades.buenSabor.repositories.ArticuloManufacturadoDetalleRepository;
@@ -28,6 +31,13 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     private ArticuloManufacturadoRepository articuloManufacturadoRepository;
     @Autowired
     private ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+    @Autowired
+    private ArticuloManufacturadoMapper articuloManufacturadoMapper;
+    @Override
+    public List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal) {
+        List<ArticuloManufacturado> manufacturados = this.articuloManufacturadoRepository.manufacturados(idSucursal);
+        return articuloManufacturadoMapper.manufacturadosToManufacturadoFullDtos(manufacturados);
+    }
     @Override
     public ArticuloManufacturado create(ArticuloManufacturado request) {
         // Validación y persistencia de los detalles

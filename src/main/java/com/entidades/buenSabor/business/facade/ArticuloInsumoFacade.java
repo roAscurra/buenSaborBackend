@@ -20,6 +20,7 @@ public interface ArticuloInsumoFacade extends BaseFacade<ArticuloInsumoFullDto,L
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
     ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad);
-    List<ArticuloInsumo> insumos(Long idSucursal);
+    List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal);
+    List<ArticuloInsumoFullDto> insumos(Long idSucursal);
 
 }
