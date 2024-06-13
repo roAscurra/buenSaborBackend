@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface CategoriaRepository extends BaseRepository<Categoria,Long>{
-    @Query("SELECT c FROM Categoria c JOIN c.sucursales s WHERE s.id = :idSucursal")
+    @Query("SELECT c FROM Categoria c JOIN c.sucursales s WHERE s.id = :idSucursal AND c.eliminado = false")
     List<Categoria> categoriaSucursal(@Param("idSucursal") Long idSucursal);
 }
