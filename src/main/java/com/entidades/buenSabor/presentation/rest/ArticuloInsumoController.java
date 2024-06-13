@@ -1,9 +1,11 @@
 package com.entidades.buenSabor.presentation.rest;
 
+import com.entidades.buenSabor.business.facade.ArticuloInsumoFacade;
 import com.entidades.buenSabor.business.facade.Imp.ArticuloInsumoFacadeImp;
 import com.entidades.buenSabor.business.service.ArticuloInsumoService;
 import com.entidades.buenSabor.business.service.Imp.ArticuloInsumoServiceImp;
 import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
@@ -30,12 +32,25 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
 
     @Autowired
     private ArticuloInsumoService articuloInsumoService;
+    @Autowired
+    private ArticuloInsumoFacade articuloInsumoFacade;
+    @GetMapping("/elaborar/{idSucursal}")
+    public ResponseEntity<List<ArticuloInsumoFullDto>> insumosParaElaborar(@PathVariable Long idSucursal) {
+        List<ArticuloInsumoFullDto> insumos = articuloInsumoFacade.insumosParaElaborar(idSucursal);
+        if (insumos != null && !insumos.isEmpty()) {
+            return ResponseEntity.ok(insumos);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @GetMapping("/sucursal/{idSucursal}")
-    public ResponseEntity<List<ArticuloInsumo>> obtenerInsumosPorSucursalYParaElaborar(
-            @PathVariable Long idSucursal
-    ) {
-        List<ArticuloInsumo> insumos = articuloInsumoService.insumos(idSucursal);
-        return ResponseEntity.ok(insumos);
+    public ResponseEntity<List<ArticuloInsumoFullDto>> insumos(@PathVariable Long idSucursal) {
+        List<ArticuloInsumoFullDto> insumos = articuloInsumoFacade.insumos(idSucursal);
+        if (insumos != null && !insumos.isEmpty()) {
+            return ResponseEntity.ok(insumos);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/{id}")
@@ -49,13 +64,13 @@ public class ArticuloInsumoController extends BaseControllerImp<ArticuloInsumo, 
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloInsumoFullDto> create(@RequestBody ArticuloInsumoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloInsumoFullDto> edit(@RequestBody ArticuloInsumoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }

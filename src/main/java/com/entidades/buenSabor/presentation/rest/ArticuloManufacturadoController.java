@@ -1,5 +1,7 @@
 package com.entidades.buenSabor.presentation.rest;
 
+import com.entidades.buenSabor.business.facade.ArticuloInsumoFacade;
+import com.entidades.buenSabor.business.facade.ArticuloManufacturadoFacade;
 import com.entidades.buenSabor.business.facade.Imp.ArticuloManufacturadoFacadeImp;
 import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.entidades.buenSabor.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
@@ -23,7 +25,17 @@ public class ArticuloManufacturadoController  extends BaseControllerImp<Articulo
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImp facade) {
         super(facade);
     }
-
+    @Autowired
+    private ArticuloManufacturadoFacade articuloManufacturadoFacade;
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<ArticuloManufacturadoFullDto>> manufacturados(@PathVariable Long idSucursal) {
+        List<ArticuloManufacturadoFullDto> manufacturados = articuloManufacturadoFacade.manufacturados(idSucursal);
+        if (manufacturados != null && !manufacturados.isEmpty()) {
+            return ResponseEntity.ok(manufacturados);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<ArticuloManufacturadoFullDto> getById(@PathVariable Long id){
         return super.getById(id);
@@ -35,13 +47,13 @@ public class ArticuloManufacturadoController  extends BaseControllerImp<Articulo
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloManufacturadoFullDto> create(@RequestBody ArticuloManufacturadoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloManufacturadoFullDto> edit(@RequestBody ArticuloManufacturadoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }

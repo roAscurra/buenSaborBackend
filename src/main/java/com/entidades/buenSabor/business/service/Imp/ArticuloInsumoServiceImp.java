@@ -1,8 +1,10 @@
 package com.entidades.buenSabor.business.service.Imp;
 
+import com.entidades.buenSabor.business.mapper.ArticuloInsumoMapper;
 import com.entidades.buenSabor.business.service.ArticuloInsumoService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
+import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.repositories.ArticuloInsumoRepository;
@@ -24,9 +26,17 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
     @Autowired
     private ArticuloInsumoRepository articuloInsumoRepository;
+    @Autowired
+    private ArticuloInsumoMapper articuloInsumoMapper;
     @Override
-    public List<ArticuloInsumo> insumos(Long idSucursal) {
-        return articuloInsumoRepository.insumosPorSucursal(idSucursal);
+    public List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal) {
+        List<ArticuloInsumo> insumos = this.articuloInsumoRepository.insumosParaElaborar(idSucursal);
+        return articuloInsumoMapper.insumosToInsumoFullDtos(insumos);
+    }
+    @Override
+    public List<ArticuloInsumoFullDto> insumos(Long idSucursal) {
+        List<ArticuloInsumo> insumos = this.articuloInsumoRepository.insumos(idSucursal);
+        return articuloInsumoMapper.insumosToInsumoFullDtos(insumos);
     }
     @Override
     public ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad) {
@@ -36,11 +46,6 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
 
             // Descontar la cantidad del stock actual
             int stockDescontado = insumo.getStockActual() - cantidad;
-
-//            // Validar que el stock actual no supere el mínimo
-//            if (stockDescontado < insumo.getStockMinimo()) {
-//                throw new RuntimeException("El insumo " + insumo.getDenominacion() + " alcanzó el stock mínimo: " + stockDescontado);
-//            }
 
             // Asignar el nuevo stock al insumo
             insumo.setStockActual(stockDescontado);

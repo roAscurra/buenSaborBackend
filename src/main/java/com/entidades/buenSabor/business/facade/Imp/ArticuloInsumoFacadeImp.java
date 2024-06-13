@@ -29,7 +29,11 @@ public class ArticuloInsumoFacadeImp extends BaseFacadeImp<ArticuloInsumo, Artic
         return articuloInsumoService.getAllImagesByInsumoId(id);
     }
     @Override
-    public List<ArticuloInsumo> insumos(Long idSucursal) {
+    public List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal) {
+        return this.articuloInsumoService.insumosParaElaborar(idSucursal);
+    }
+    @Override
+    public List<ArticuloInsumoFullDto> insumos(Long idSucursal) {
         return this.articuloInsumoService.insumos(idSucursal);
     }
     @Override

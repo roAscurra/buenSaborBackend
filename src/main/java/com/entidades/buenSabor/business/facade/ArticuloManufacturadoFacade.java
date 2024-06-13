@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.business.facade;
 
 import com.entidades.buenSabor.business.facade.Base.BaseFacade;
+import com.entidades.buenSabor.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.entidades.buenSabor.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
 import com.entidades.buenSabor.domain.entities.ArticuloManufacturado;
 import org.springframework.http.ResponseEntity;
@@ -15,5 +16,6 @@ public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufact
     ResponseEntity<String> uploadImages(MultipartFile[] files, Long id);
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
+    List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal);
 
 }
