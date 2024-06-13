@@ -37,6 +37,8 @@ public class Articulo  extends Base {
     @ManyToOne
     protected Categoria categoria;
 
+    @ManyToOne
+    protected Sucursal sucursal;
 
 }
 

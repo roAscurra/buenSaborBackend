@@ -1,5 +1,6 @@
 package com.entidades.buenSabor.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -65,4 +66,11 @@ public class Sucursal extends  Base{
     @JoinColumn(name = "id_sucursal")
     @NotAudited
     private Set<ImagenSucursal> imagenes;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sucursal")
+    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @Builder.Default
+    @JsonIgnore
+    private Set<Articulo> articulos = new HashSet<>();
 }

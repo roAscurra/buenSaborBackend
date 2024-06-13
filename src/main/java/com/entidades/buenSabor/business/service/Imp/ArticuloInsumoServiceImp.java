@@ -37,11 +37,6 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
             // Descontar la cantidad del stock actual
             int stockDescontado = insumo.getStockActual() - cantidad;
 
-//            // Validar que el stock actual no supere el mínimo
-//            if (stockDescontado < insumo.getStockMinimo()) {
-//                throw new RuntimeException("El insumo " + insumo.getDenominacion() + " alcanzó el stock mínimo: " + stockDescontado);
-//            }
-
             // Asignar el nuevo stock al insumo
             insumo.setStockActual(stockDescontado);
 

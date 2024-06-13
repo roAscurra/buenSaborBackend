@@ -35,13 +35,13 @@ public class ArticuloManufacturadoController  extends BaseControllerImp<Articulo
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloManufacturadoFullDto> create(@RequestBody ArticuloManufacturadoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ArticuloManufacturadoFullDto> edit(@RequestBody ArticuloManufacturadoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
