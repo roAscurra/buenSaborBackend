@@ -31,13 +31,19 @@ public class FacturaServiceImp extends BaseServiceImp<Factura, Long> implements 
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        PreferenceMP preferenceMP = preferenceMPService.obtenerPorIdPedido(pedidoId);
+        PreferenceMP preferenceMP = null;
+        try {
+            preferenceMP = preferenceMPService.obtenerPorIdPedido(pedidoId);
+        } catch (Exception e) {
+            // Log the exception if necessary
+            System.out.println("PreferenceMP no encontrado para el pedidoId: " + pedidoId);
+        }
 
         Factura factura = Factura.builder()
                 .fechaFcturacion(LocalDate.now())
                 .formaPago(pedido.getFormaPago())
                 .totalVenta(pedido.getTotal())
-                .mpPreferenceId(preferenceMP.getId())
+                .mpPreferenceId(preferenceMP != null ? preferenceMP.getId() : "0") // Asigna 0 si preferenceMP es null
                 .build();
 
         facturaRepository.save(factura);
