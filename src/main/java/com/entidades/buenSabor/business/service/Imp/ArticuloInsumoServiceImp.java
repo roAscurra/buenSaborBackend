@@ -3,7 +3,9 @@ package com.entidades.buenSabor.business.service.Imp;
 import com.entidades.buenSabor.business.service.ArticuloInsumoService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
+import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.entities.*;
+import com.entidades.buenSabor.repositories.ArticuloInsumoRepository;
 import com.entidades.buenSabor.repositories.ImagenArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,12 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
 
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
+    @Autowired
+    private ArticuloInsumoRepository articuloInsumoRepository;
+    @Override
+    public List<ArticuloInsumo> insumos(Long idSucursal) {
+        return articuloInsumoRepository.insumosPorSucursal(idSucursal);
+    }
     @Override
     public ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad) {
         try {

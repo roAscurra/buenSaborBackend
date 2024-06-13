@@ -14,14 +14,14 @@ import java.util.List;
 
 public interface PedidoService extends BaseService<Pedido, Long> {
 
-    List<Object[]> getRankingInsumo(Instant desde, Instant hasta);
-    List<Object[]> getRankingInsumo();
-    List<Object[]> getCantidadPedidosPorCliente(Instant desde, Instant hasta);
-    List<Object[]> getCantidadPedidosPorCliente();
-    List<Object[]> getIngresos(Instant desde, Instant hasta);
-    List<Object[]> getIngresos();
-    List<Object[]> getGanancias(Instant desde, Instant hasta);
-    List<Object[]> getGanancias();
+    List<Object[]> getRankingInsumo(Long sucursalId, Instant desde, Instant hasta);
+    List<Object[]> getRankingInsumo(Long sucursalId);
+    List<Object[]> getCantidadPedidosPorCliente(Long sucursalId, Instant desde, Instant hasta);
+    List<Object[]> getCantidadPedidosPorCliente(Long sucursalId);
+    List<Object[]> getIngresos(Long sucursalId, Instant desde, Instant hasta);
+    List<Object[]> getIngresos(Long sucursalId);
+    List<Object[]> getGanancias(Long sucursalId, Instant desde, Instant hasta);
+    List<Object[]> getGanancias(Long sucursalId);
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
     List<Pedido> getPedidosFiltrados(String rol);
