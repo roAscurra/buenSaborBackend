@@ -38,7 +38,7 @@ public class PedidoFullDto extends BaseDto {
     private FormaPago formaPago;
     private LocalDate fechaPedido;
     private Set<DetallePedidoFullDto> detallePedidos;
-//    private Factura factura;
+    private Factura factura;
     private SucursalShortDto sucursal;
     private ClienteFullDto cliente;
     private UsuarioDto usuario;
