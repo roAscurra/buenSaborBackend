@@ -47,6 +47,7 @@ public class FacturaController extends BaseControllerImp<Factura, FacturaFullDto
     }
 
     @PostMapping("/crear/{pedidoId}")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN')")
     public ResponseEntity<Factura> crearFactura(@PathVariable Long pedidoId) {
         Factura factura = this.facade.crearFactura(pedidoId);
         return ResponseEntity.ok(factura);
