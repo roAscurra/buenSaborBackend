@@ -8,7 +8,9 @@ import com.entidades.buenSabor.domain.entities.Pedido;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.PedidoRepository;
+import com.lowagie.text.DocumentException;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.List;
 
@@ -28,5 +30,7 @@ public interface PedidoService extends BaseService<Pedido, Long> {
 
     List<PedidoFullDto> findByClienteId(Long idCliente);
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
+
+    Pedido getPedidoById(Long pedidoId);
 
 }

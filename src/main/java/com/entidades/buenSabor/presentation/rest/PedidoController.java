@@ -200,7 +200,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @PutMapping("/{pedidoId}/estado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado
@@ -210,10 +210,27 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("/filtrado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
     public ResponseEntity<List<Pedido>> getPedidosFiltrados(@RequestParam String rol) {
         List<Pedido> pedidos = this.facade.getPedidosFiltrados(rol);
         return ResponseEntity.ok(pedidos);
     }
 
+    @GetMapping("/downloadPdf/{pedidoId}")
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable Long pedidoId) {
+        try (ByteArrayOutputStream outputStream = pedidoFacade.generatePedidoPDF(pedidoId)) {
+            // Establecer las cabeceras de la respuesta
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            headers.setContentDispositionFormData("attachment", "factura.pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            // Devolver el archivo PDF como parte de la respuesta HTTP
+            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
