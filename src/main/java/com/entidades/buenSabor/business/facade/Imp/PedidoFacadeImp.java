@@ -42,13 +42,13 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         this.pedidoService = pedidoService;
     }
 
-    public List<Object[]> getRankingInsumoData() {
-        return this.pedidoService.getRankingInsumo()
+    public List<Object[]> getRankingInsumoData(Long sucursalId) {
+        return this.pedidoService.getRankingInsumo(sucursalId)
                 .stream().map((value) -> new Object[]{((Articulo) value[0]).getDenominacion(), value[1]})
                 .toList();
     }
 
-    public SXSSFWorkbook getRankingInsumo(Instant desde, Instant hasta) {
+    public SXSSFWorkbook getRankingInsumo(Long sucursalId, Instant desde, Instant hasta) {
 
         // Se crea el libro
         SXSSFWorkbook libro = new SXSSFWorkbook(50); //importante !! el 50 indica el tamaño de paginación
@@ -72,7 +72,7 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
 
         int nroFila = 1;
         nroColumna = 0;
-        List<Object[]> rankingArticulos = this.pedidoService.getRankingInsumo(desde, hasta);
+        List<Object[]> rankingArticulos = this.pedidoService.getRankingInsumo(sucursalId, desde, hasta);
         if(rankingArticulos != null){
             for (Object[] object : rankingArticulos) {
                 nroColumna = 0;
@@ -87,11 +87,11 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         return libro;
     }
 
-    public List<Object[]> getCantidadDePedidosPorData() {
-        return this.pedidoService.getCantidadPedidosPorCliente();
+    public List<Object[]> getCantidadDePedidosPorData(Long sucursalId) {
+        return this.pedidoService.getCantidadPedidosPorCliente(sucursalId);
     }
 
-    public SXSSFWorkbook getCantidadDePedidosPorCliente(Instant desde, Instant hasta) {
+    public SXSSFWorkbook getCantidadDePedidosPorCliente(Long sucursalId, Instant desde, Instant hasta) {
 
         // Se crea el libro
         SXSSFWorkbook libro = new SXSSFWorkbook(50); //importante !! el 50 indica el tamaño de paginación
@@ -115,7 +115,7 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
 
         int nroFila = 1;
         nroColumna = 0;
-        List<Object[]> rankingArticulos = this.pedidoService.getCantidadPedidosPorCliente(desde, hasta);
+        List<Object[]> rankingArticulos = this.pedidoService.getCantidadPedidosPorCliente(sucursalId, desde, hasta);
         if(rankingArticulos != null){
             for (Object[] object : rankingArticulos) {
                 nroColumna = 0;
@@ -130,11 +130,11 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         return libro;
     }
 
-    public List<Object[]> getIngresosData() {
-        return this.pedidoService.getIngresos();
+    public List<Object[]> getIngresosData(Long sucursalId) {
+        return this.pedidoService.getIngresos(sucursalId);
     }
 
-    public SXSSFWorkbook getIngresos(Instant desde, Instant hasta) {
+    public SXSSFWorkbook getIngresos(Long sucursalId, Instant desde, Instant hasta) {
 
         // Se crea el libro
         SXSSFWorkbook libro = new SXSSFWorkbook(50); //importante !! el 50 indica el tamaño de paginación
@@ -158,7 +158,7 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
 
         int nroFila = 1;
         nroColumna = 0;
-        List<Object[]> rankingArticulos = this.pedidoService.getIngresos(desde, hasta);
+        List<Object[]> rankingArticulos = this.pedidoService.getIngresos(sucursalId, desde, hasta);
         if(rankingArticulos != null){
             for (Object[] object : rankingArticulos) {
                 nroColumna = 0;
@@ -173,11 +173,11 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         return libro;
     }
 
-    public List<Object[]> getGananciasData() {
-        return this.pedidoService.getGanancias();
+    public List<Object[]> getGananciasData(Long sucursalId) {
+        return this.pedidoService.getGanancias(sucursalId);
     }
 
-    public SXSSFWorkbook getGanancias(Instant desde, Instant hasta) {
+    public SXSSFWorkbook getGanancias(Long sucursalId, Instant desde, Instant hasta) {
 
         // Se crea el libro
         SXSSFWorkbook libro = new SXSSFWorkbook(50); //importante !! el 50 indica el tamaño de paginación
@@ -201,7 +201,7 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
 
         int nroFila = 1;
         nroColumna = 0;
-        List<Object[]> rankingArticulos = this.pedidoService.getGanancias(desde, hasta);
+        List<Object[]> rankingArticulos = this.pedidoService.getGanancias(sucursalId, desde, hasta);
         if(rankingArticulos != null){
             for (Object[] object : rankingArticulos) {
                 nroColumna = 0;
