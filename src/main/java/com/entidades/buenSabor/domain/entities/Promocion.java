@@ -52,7 +52,6 @@ public class Promocion  extends Base{
 
     @ManyToMany (mappedBy = "promociones")
     @Builder.Default
-    @JsonIgnore
     private Set<Sucursal> sucursales = new HashSet<>();
 
 }
