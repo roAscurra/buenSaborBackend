@@ -54,6 +54,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/pedido/ranking/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/pedido/downloadPdf/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->

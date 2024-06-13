@@ -83,11 +83,11 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         return super.deleteById(id);
     }
 
-    @GetMapping("ranking/insumos/excel")
+    @GetMapping("ranking/insumos/excel/{sucursalId}")
     @CrossOrigin("*")
-    public ResponseEntity<byte[]> downloadRankingInsumosExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
+    public ResponseEntity<byte[]> downloadRankingInsumosExcel(@PathVariable Long sucursalId, @RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
-            SXSSFWorkbook libroExcel = this.facade.getRankingInsumo(desde, hasta);
+            SXSSFWorkbook libroExcel = this.facade.getRankingInsumo(sucursalId, desde, hasta);
             // Escribir el libro de trabajo en un flujo de bytes
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             libroExcel.write(outputStream);
@@ -105,18 +105,18 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/insumos/data")
+    @GetMapping("ranking/insumos/data/{sucursalId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin("*")
-    public ResponseEntity<List<Object[]>> downloadRankingInsumosData() throws SQLException {
-        return ResponseEntity.ok(this.facade.getRankingInsumoData());
+    public ResponseEntity<List<Object[]>> downloadRankingInsumosData(@PathVariable Long sucursalId) throws SQLException {
+        return ResponseEntity.ok(this.facade.getRankingInsumoData(sucursalId));
     }
 
-    @GetMapping("ranking/pedidos/cliente/excel")
+    @GetMapping("ranking/pedidos/cliente/excel/{sucursalId}")
     @CrossOrigin("*")
-    public ResponseEntity<byte[]> downloadCantidadPedidosPorClienteExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
+    public ResponseEntity<byte[]> downloadCantidadPedidosPorClienteExcel(@PathVariable Long sucursalId, @RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
-            SXSSFWorkbook libroExcel = this.facade.getCantidadDePedidosPorCliente(desde, hasta);
+            SXSSFWorkbook libroExcel = this.facade.getCantidadDePedidosPorCliente(sucursalId, desde, hasta);
             // Escribir el libro de trabajo en un flujo de bytes
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             libroExcel.write(outputStream);
@@ -134,18 +134,18 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/pedidos/cliente/data")
+    @GetMapping("ranking/pedidos/cliente/data/{sucursalId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin("*")
-    public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData() throws SQLException {
-        return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData());
+    public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData(@PathVariable Long sucursalId) throws SQLException {
+        return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData(sucursalId));
     }
 
-    @GetMapping("ranking/ingresos/excel")
+    @GetMapping("ranking/ingresos/excel/{sucursalId}")
     @CrossOrigin("*")
-    public ResponseEntity<byte[]> downloadIngresosExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
+    public ResponseEntity<byte[]> downloadIngresosExcel(@PathVariable Long sucursalId, @RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
-            SXSSFWorkbook libroExcel = this.facade.getIngresos(desde, hasta);
+            SXSSFWorkbook libroExcel = this.facade.getIngresos(sucursalId, desde, hasta);
             // Escribir el libro de trabajo en un flujo de bytes
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             libroExcel.write(outputStream);
@@ -163,18 +163,18 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/ingresos/data")
+    @GetMapping("ranking/ingresos/data/{sucursalId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin("*")
-    public ResponseEntity<List<Object[]>> downloadIngresosData() throws SQLException {
-        return ResponseEntity.ok(this.facade.getIngresosData());
+    public ResponseEntity<List<Object[]>> downloadIngresosData(@PathVariable Long sucursalId) throws SQLException {
+        return ResponseEntity.ok(this.facade.getIngresosData(sucursalId));
     }
 
-    @GetMapping("ranking/ganancias/excel")
+    @GetMapping("ranking/ganancias/excel/{sucursalId}")
     @CrossOrigin("*")
-    public ResponseEntity<byte[]> downloadGananciasExcel(@RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
+    public ResponseEntity<byte[]> downloadGananciasExcel(@PathVariable Long sucursalId, @RequestParam("desde") Instant desde, @RequestParam("hasta") Instant hasta) throws SQLException {
         try {
-            SXSSFWorkbook libroExcel = this.facade.getGanancias(desde, hasta);
+            SXSSFWorkbook libroExcel = this.facade.getGanancias(sucursalId, desde, hasta);
             // Escribir el libro de trabajo en un flujo de bytes
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             libroExcel.write(outputStream);
@@ -192,15 +192,15 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
         }
     }
 
-    @GetMapping("ranking/ganancias/data")
+    @GetMapping("ranking/ganancias/data/{sucursalId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin("*")
-    public ResponseEntity<List<Object[]>> downloadGananciasData() throws SQLException {
-        return ResponseEntity.ok(this.facade.getGananciasData());
+    public ResponseEntity<List<Object[]>> downloadGananciasData(@PathVariable Long sucursalId) throws SQLException {
+        return ResponseEntity.ok(this.facade.getGananciasData(sucursalId));
     }
 
     @PutMapping("/{pedidoId}/estado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado
@@ -210,10 +210,27 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("/filtrado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'DELIVERY')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
     public ResponseEntity<List<Pedido>> getPedidosFiltrados(@RequestParam String rol) {
         List<Pedido> pedidos = this.facade.getPedidosFiltrados(rol);
         return ResponseEntity.ok(pedidos);
     }
 
+    @GetMapping("/downloadPdf/{pedidoId}")
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable Long pedidoId) {
+        try (ByteArrayOutputStream outputStream = pedidoFacade.generatePedidoPDF(pedidoId)) {
+            // Establecer las cabeceras de la respuesta
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            headers.setContentDispositionFormData("attachment", "factura.pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            // Devolver el archivo PDF como parte de la respuesta HTTP
+            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -8,14 +8,22 @@ import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.repositories.*;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Table;
+import com.lowagie.text.pdf.PdfDocument;
+import com.lowagie.text.pdf.PdfWriter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -158,51 +166,51 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
     }
 
     @Override
-    public List<Object[]> getRankingInsumo(Instant desde, Instant hasta) {
+    public List<Object[]> getRankingInsumo(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getRankingInsumos(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getRankingInsumos(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getRankingInsumo() {
-        return pedidoRepository.getRankingInsumos();
+    public List<Object[]> getRankingInsumo(Long sucursalId) {
+        return pedidoRepository.getRankingInsumos(sucursalId);
     }
 
     @Override
-    public List<Object[]> getCantidadPedidosPorCliente(Instant desde, Instant hasta) {
+    public List<Object[]> getCantidadPedidosPorCliente(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getCantidadPedidosPorCliente(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getCantidadPedidosPorCliente(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getCantidadPedidosPorCliente() {
-        return pedidoRepository.getCantidadPedidosPorCliente();
+    public List<Object[]> getCantidadPedidosPorCliente(Long sucursalId) {
+        return pedidoRepository.getCantidadPedidosPorCliente(sucursalId);
     }
 
     @Override
-    public List<Object[]> getIngresos(Instant desde, Instant hasta) {
+    public List<Object[]> getIngresos(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getIngresos(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getIngresos(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getIngresos() {
-        return pedidoRepository.getIngresos();
+    public List<Object[]> getIngresos(Long sucursalId) {
+        return pedidoRepository.getIngresos(sucursalId);
     }
 
     @Override
-    public List<Object[]> getGanancias(Instant desde, Instant hasta) {
+    public List<Object[]> getGanancias(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getGanancias(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getGanancias(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getGanancias() {
-        return pedidoRepository.getGanancias();
+    public List<Object[]> getGanancias(Long sucursalId) {
+        return pedidoRepository.getGanancias(sucursalId);
     }
 
     @Override
@@ -217,11 +225,11 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         switch (rol) {
             case "CAJERO":
                 return pedidoRepository.findByEstadoIn(Arrays.asList(
-                        Estado.PENDIENTE, Estado.TERMINADO, Estado.ENTREGADO, Estado.FACTURADO));
+                        Estado.PENDIENTE, Estado.TERMINADO, Estado.FACTURADO, Estado.EN_DELIVERY));
             case "COCINERO":
                 return pedidoRepository.findByEstado(Estado.PREPARACION);
-            case "DELIVERY":
-                return pedidoRepository.findByEstado(Estado.EN_DELIVERY);
+//            case "DELIVERY":
+//                return pedidoRepository.findByEstado(Estado.EN_DELIVERY);
             case "ADMIN":
                 return pedidoRepository.findAll(); // El admin puede ver todos los pedidos
             default:
@@ -229,6 +237,10 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
         }
     }
 
-
+    @Override
+    public Pedido getPedidoById(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+    }
 
 }

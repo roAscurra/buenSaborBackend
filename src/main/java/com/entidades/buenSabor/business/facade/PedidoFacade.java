@@ -7,22 +7,23 @@ import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.List;
 
 public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
 
-    SXSSFWorkbook getRankingInsumo(Instant desde, Instant hasta);
+    SXSSFWorkbook getRankingInsumo(Long sucursalId, Instant desde, Instant hasta);
 
-    List<Object[]> getRankingInsumoData();
+    List<Object[]> getRankingInsumoData(Long sucursalId);
 
-    List<Object[]> getCantidadDePedidosPorData();
+    List<Object[]> getCantidadDePedidosPorData(Long sucursalId);
 
-    List<Object[]> getIngresosData();
+    List<Object[]> getIngresosData(Long sucursalId);
 
-    List<Object[]> getGananciasData();
+    List<Object[]> getGananciasData(Long sucursalId);
 
-    SXSSFWorkbook getCantidadDePedidosPorCliente(Instant desde, Instant hasta);
+    SXSSFWorkbook getCantidadDePedidosPorCliente(Long sucursalId, Instant desde, Instant hasta);
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
     List<Pedido> getPedidosFiltrados(String rol);
@@ -30,4 +31,5 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
     List<PedidoFullDto> findByClienteId(Long clienteId);
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
+    ByteArrayOutputStream generatePedidoPDF(Long pedidoId);
 }
