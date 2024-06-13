@@ -4,6 +4,7 @@ import com.entidades.buenSabor.business.facade.PedidoFacade;
 import com.entidades.buenSabor.business.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ public class EmailSendController {
     }
 
     @PostMapping("/enviarFactura/{pedidoId}")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN')")
     public ResponseEntity<String> enviarFacturaPorCorreo(@PathVariable Long pedidoId, @RequestParam String to) {
         try {
             // Generar el PDF de la factura
