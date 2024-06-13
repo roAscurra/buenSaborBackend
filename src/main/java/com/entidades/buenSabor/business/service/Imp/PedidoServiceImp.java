@@ -158,51 +158,51 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
     }
 
     @Override
-    public List<Object[]> getRankingInsumo(Instant desde, Instant hasta) {
+    public List<Object[]> getRankingInsumo(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getRankingInsumos(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getRankingInsumos(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getRankingInsumo() {
-        return pedidoRepository.getRankingInsumos();
+    public List<Object[]> getRankingInsumo(Long sucursalId) {
+        return pedidoRepository.getRankingInsumos(sucursalId);
     }
 
     @Override
-    public List<Object[]> getCantidadPedidosPorCliente(Instant desde, Instant hasta) {
+    public List<Object[]> getCantidadPedidosPorCliente(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getCantidadPedidosPorCliente(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getCantidadPedidosPorCliente(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getCantidadPedidosPorCliente() {
-        return pedidoRepository.getCantidadPedidosPorCliente();
+    public List<Object[]> getCantidadPedidosPorCliente(Long sucursalId) {
+        return pedidoRepository.getCantidadPedidosPorCliente(sucursalId);
     }
 
     @Override
-    public List<Object[]> getIngresos(Instant desde, Instant hasta) {
+    public List<Object[]> getIngresos(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getIngresos(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getIngresos(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getIngresos() {
-        return pedidoRepository.getIngresos();
+    public List<Object[]> getIngresos(Long sucursalId) {
+        return pedidoRepository.getIngresos(sucursalId);
     }
 
     @Override
-    public List<Object[]> getGanancias(Instant desde, Instant hasta) {
+    public List<Object[]> getGanancias(Long sucursalId, Instant desde, Instant hasta) {
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return pedidoRepository.getGanancias(ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
+        return pedidoRepository.getGanancias(sucursalId, ZonedDateTime.ofInstant(desde, zoneId).toLocalDate(), ZonedDateTime.ofInstant(hasta, zoneId).toLocalDate());
     }
 
     @Override
-    public List<Object[]> getGanancias() {
-        return pedidoRepository.getGanancias();
+    public List<Object[]> getGanancias(Long sucursalId) {
+        return pedidoRepository.getGanancias(sucursalId);
     }
 
     @Override
