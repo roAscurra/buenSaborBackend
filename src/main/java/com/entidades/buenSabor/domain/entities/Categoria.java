@@ -3,6 +3,7 @@ package com.entidades.buenSabor.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -20,35 +21,28 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 @Audited
-public class Categoria extends Base{
+public class Categoria extends Base {
     private String denominacion;
 
-
+    // Relación muchos a uno con la misma entidad (padre)
+    @ManyToOne
+    @JoinColumn(name = "categoria_padre_id") // Nombre de la columna en la tabla de categoría que referencia al padre
+    private Categoria parent;
 
     @ManyToMany(mappedBy = "categorias")
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
     @JsonIgnore
     private Set<Sucursal> sucursales = new HashSet<>();
 
-    @OneToMany
-    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
-    //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "categoria_id")
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
-    @Builder.Default
-    @JsonIgnore
-    private Set<Articulo> articulos = new HashSet<>();
-
-
-    @OneToMany
-    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
-    //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "categoria_id")
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @OneToMany(mappedBy = "parent") // MappedBy indica el nombre del campo en Categoria que representa la relación
     @Builder.Default
     @JsonIgnore
     private Set<Categoria> subCategorias = new HashSet<>();
 
+    @OneToMany(mappedBy = "categoria")
+    @Builder.Default
+    @JsonIgnore
+    private Set<Articulo> articulos = new HashSet<>();
 
+    // Otros atributos y métodos de la clase
 }
