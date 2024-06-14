@@ -124,8 +124,12 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByArticuloManufacturadoId(Long id) {
         try {
-            // Consultar todas las imágenes desde la base de datos
-            List<ImagenArticulo> images = baseRepository.getById(id).getImagenes().stream().toList();
+            // Consultar todas las imágenes desde la base de datos que no estén eliminadas
+            ArticuloManufacturado articulo = baseRepository.getById(id);
+            List<ImagenArticulo> images = articulo.getImagenes().stream()
+                    .filter(imagen -> !imagen.isEliminado()) // Filtrar imágenes no eliminadas
+                    .toList();
+
             List<Map<String, Object>> imageList = new ArrayList<>();
 
             // Convertir cada imagen en un mapa de atributos para devolver como JSON
@@ -143,7 +147,8 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
             e.printStackTrace();
             // Devolver un error interno del servidor (500) si ocurre alguna excepción
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idArticuloManufacturado) {
