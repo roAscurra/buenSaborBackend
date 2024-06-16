@@ -6,5 +6,6 @@ public enum Estado {
     TERMINADO,
     EN_DELIVERY,
     ENTREGADO,
-    FACTURADO
+    FACTURADO,
+    RECHAZADO
 }
