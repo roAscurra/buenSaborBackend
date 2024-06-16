@@ -43,12 +43,12 @@ public class MercadoPagoService {
             List<PreferenceItemRequest> items = new ArrayList<>();
             items.add(itemRequest);
 
-            String successUrl = "http://localhost:5174/carrito/1?i=" + pedido.getId();
+//            String successUrl = "http://localhost:5174/carrito/1?i=" + pedido.getId();
 
             PreferenceBackUrlsRequest backURL = PreferenceBackUrlsRequest.builder()
-                    .success(successUrl)
-                    .pending("http://localhost:5174/mppending")
-                    .failure("http://localhost:5174/mpfailure")
+                    .success("https://www.youtube.com/")
+                    .pending("https://www.youtube.com/")
+                    .failure("https://www.youtube.com/")
                     .build();
 
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()

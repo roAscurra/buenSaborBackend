@@ -1,20 +1,20 @@
-//package com.entidades.buenSabor.utils;
-//
-//import com.entidades.buenSabor.domain.entities.Localidad;
-//import com.entidades.buenSabor.domain.entities.Pais;
-//import com.entidades.buenSabor.domain.entities.Provincia;
-//import com.entidades.buenSabor.repositories.LocalidadRepository;
-//import com.entidades.buenSabor.repositories.PaisRepository;
-//import com.entidades.buenSabor.repositories.ProvinciaRepository;
-//import org.json.JSONArray;
-//import org.json.JSONObject;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.stereotype.Component;
-//import org.springframework.web.client.RestTemplate;
-//
-//import java.util.ArrayList;
-//import java.util.List;
+package com.entidades.buenSabor.utils;
+
+import com.entidades.buenSabor.domain.entities.Localidad;
+import com.entidades.buenSabor.domain.entities.Pais;
+import com.entidades.buenSabor.domain.entities.Provincia;
+import com.entidades.buenSabor.repositories.LocalidadRepository;
+import com.entidades.buenSabor.repositories.PaisRepository;
+import com.entidades.buenSabor.repositories.ProvinciaRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 //
 //@Component
 //class LocalidadesDownloader implements CommandLineRunner {
