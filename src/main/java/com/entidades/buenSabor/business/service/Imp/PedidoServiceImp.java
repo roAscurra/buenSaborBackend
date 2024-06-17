@@ -217,7 +217,63 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido, Long> implements Pe
     public Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado) {
         Pedido pedido = pedidoRepository.findById(pedidoId).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
         pedido.setEstado(nuevoEstado);
+
+        if(nuevoEstado == Estado.RECHAZADO){
+            Set<DetallePedido> detalles = pedido.getDetallePedidos();
+            Set<DetallePedido> detallesPersistidos = new HashSet<>();
+
+            if (detalles != null && !detalles.isEmpty()) {
+                for (DetallePedido detalle : detalles) {
+                    Articulo articulo = detalle.getArticulo();
+                    articulo = articuloRepository.findById(detalle.getArticulo().getId())
+                            .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
+                    detalle.setArticulo(articulo);
+                    DetallePedido savedDetalle = detallePedidoRepository.save(detalle);
+                    incrementarStocl(articulo, detalle.getCantidad());
+                    detallesPersistidos.add(savedDetalle);
+                }
+            } else {
+                throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+            }
+        }
+
         return pedidoRepository.save(pedido);
+    }
+    @Transactional
+    public Articulo incrementarStocl(Articulo articulo, int cantidad) {
+        if (articulo instanceof ArticuloInsumo) {
+
+            ArticuloInsumo insumo = (ArticuloInsumo) articulo;
+            System.out.println("Stock antes de incrementar: " + insumo.getStockActual());
+            int stockDescontado = insumo.getStockActual() + cantidad; // Descontar cantidad a stock actual
+            System.out.println("Stock después de agregarle la cantidad: " + stockDescontado);
+
+            // Asignarle al insumo
+            insumo.setStockActual(stockDescontado);
+            return insumo; // Return the updated insumo
+
+        } else if (articulo instanceof ArticuloManufacturado) {
+            // Cast the articulo to ArticuloManufacturado
+            ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
+            // Obtener los detalles del manufacturado
+            Set<ArticuloManufacturadoDetalle> detalles = manufacturado.getArticuloManufacturadoDetalles();
+
+            if (detalles != null && !detalles.isEmpty()) {
+                for (ArticuloManufacturadoDetalle detalle : detalles) {
+                    ArticuloInsumo insumo = detalle.getArticuloInsumo();
+                    // Cantidad necesaria de insumo por la cantidad de manufacturados del pedido
+                    int cantidadInsumo = detalle.getCantidad() * cantidad;
+                    // Descontar el stock actual
+                    int stockDescontado = insumo.getStockActual() + cantidadInsumo;
+
+                    insumo.setStockActual(stockDescontado); // Asignarle al insumo, el stock descontado
+                }
+            }
+            return manufacturado; // Return the updated manufacturado
+        } else {
+            // Por si no encuentra el artículo o es de un tipo desconocido
+            throw new RuntimeException("Artículo de tipo desconocido con id " + articulo.getId());
+        }
     }
 
     @Override
