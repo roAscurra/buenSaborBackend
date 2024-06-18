@@ -72,7 +72,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<PedidoFullDto> edit(@RequestBody PedidoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
@@ -106,7 +106,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("ranking/insumos/data/{sucursalId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadRankingInsumosData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getRankingInsumoData(sucursalId));
@@ -135,7 +135,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("ranking/pedidos/cliente/data/{sucursalId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData(sucursalId));
@@ -164,7 +164,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("ranking/ingresos/data/{sucursalId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadIngresosData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getIngresosData(sucursalId));
@@ -193,14 +193,14 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("ranking/ganancias/data/{sucursalId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadGananciasData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getGananciasData(sucursalId));
     }
 
     @PutMapping("/{pedidoId}/estado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'SUPERADMIN', 'ADMIN', 'COCINERO')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado
@@ -210,7 +210,7 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoFullDto, L
     }
 
     @GetMapping("/filtrado")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'COCINERO', 'SUPERADMIN' )")
     public ResponseEntity<List<Pedido>> getPedidosFiltrados(@RequestParam String rol) {
         List<Pedido> pedidos = this.facade.getPedidosFiltrados(rol);
         return ResponseEntity.ok(pedidos);

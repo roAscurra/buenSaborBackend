@@ -35,31 +35,31 @@ public class EmpresaController extends BaseControllerImp<Empresa, EmpresaCreateD
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<EmpresaCreateDto> create(@RequestBody EmpresaCreateDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<EmpresaCreateDto> edit(@RequestBody EmpresaCreateDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
 
 
     @PutMapping("/addSucursal/{idEmpresa}/{idSucursal}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<EmpresaFullDto> addSucursal(Long idEmpresa, Long idSucursal){
         return ResponseEntity.ok(facade.addSucursal(idEmpresa,idSucursal));
     }
     @PostMapping("/uploads")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,
             @RequestParam(value = "id", required = true) Long idArticulo) {
@@ -73,7 +73,7 @@ public class EmpresaController extends BaseControllerImp<Empresa, EmpresaCreateD
 
     // Método POST para eliminar imágenes por su publicId y Long
     @PostMapping("/deleteImg")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "id", required = true) Long id) {

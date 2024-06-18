@@ -25,7 +25,7 @@ public class EmailSendController {
     }
 
     @PostMapping("/enviarFactura/{pedidoId}")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> enviarFacturaPorCorreo(@PathVariable Long pedidoId, @RequestParam String to) {
         try {
             // Generar el PDF de la factura

@@ -35,19 +35,19 @@ public class FacturaController extends BaseControllerImp<Factura, FacturaFullDto
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<FacturaFullDto> edit(@RequestBody FacturaFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', SUPERADMIN)")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
 
     @PostMapping("/crear/{pedidoId}")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Factura> crearFactura(@PathVariable Long pedidoId) {
         Factura factura = this.facade.crearFactura(pedidoId);
         return ResponseEntity.ok(factura);

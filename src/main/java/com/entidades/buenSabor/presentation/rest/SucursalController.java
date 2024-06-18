@@ -43,21 +43,21 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalFull
     }
     @Override
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<SucursalFullDto> create(@RequestBody SucursalFullDto dto) {
         return ResponseEntity.ok().body(facade.createSucursal(dto));
     }
 
     @Override
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<SucursalFullDto> edit(@RequestBody SucursalFullDto dto, @PathVariable Long id){
        logger.info("Editing Sucursal "+id);
        logger.info("Editing Sucursal "+dto.getId());
         return ResponseEntity.ok().body(facade.updateSucursal(id, dto));
     }
     @PostMapping("/uploads")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,
             @RequestParam(value = "id", required = true) Long idArticulo) {
@@ -71,7 +71,7 @@ public class SucursalController extends BaseControllerImp<Sucursal, SucursalFull
 
     // Método POST para eliminar imágenes por su publicId y Long
     @PostMapping("/deleteImg")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "id", required = true) Long id) {
