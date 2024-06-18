@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/pedido/ranking/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/pedido/downloadPdf/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/domicilio/**").hasAnyAuthority("ADMIN", "SUPERADMIN") // Restricción para POST en domicilio
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
