@@ -116,7 +116,7 @@ public class EmpresaServiceImp extends BaseServiceImp<Empresa,Long> implements E
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
         try {
             // Eliminar la imagen de la base de datos usando su identificador
-            imagenEmpresaRepository.deleteById(id);
+            imagenEmpresaRepository.deleteImage(id);
 
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
             return cloudinaryService.deleteImage(publicId, id);
