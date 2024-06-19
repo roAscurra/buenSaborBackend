@@ -64,7 +64,12 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByInsumoId(Long id) {
         try {
             // Consultar todas las imágenes desde la base de datos
-            List<ImagenArticulo> images = baseRepository.getById(id).getImagenes().stream().toList();
+            List<ImagenArticulo> images = baseRepository.getById(id)
+                    .getImagenes()
+                    .stream()
+                    // Filtrar las imágenes no eliminadas
+                    .filter(image -> !image.isEliminado())
+                    .toList();
             List<Map<String, Object>> imageList = new ArrayList<>();
 
             // Convertir cada imagen en un mapa de atributos para devolver como JSON
@@ -82,7 +87,8 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
             e.printStackTrace();
             // Devolver un error interno del servidor (500) si ocurre alguna excepción
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idArticuloInsumo) {
@@ -137,13 +143,16 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
             imagenArticuloRepository.deleteImage(id);
 
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
-            return cloudinaryService.deleteImage(publicId, id);
+            ResponseEntity<String> cloudinaryResponse = cloudinaryService.deleteImage(publicId, id);
 
+            // Retornar la respuesta del servicio de Cloudinary junto con la respuesta del repositorio
+            return new ResponseEntity<>("{\"status\":\"SUCCESS\", \"message\":\"Imagen eliminada exitosamente.\"}", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante la eliminación
             return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
         }
     }
+
 
 }
