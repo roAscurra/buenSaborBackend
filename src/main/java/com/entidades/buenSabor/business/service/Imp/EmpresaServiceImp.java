@@ -119,7 +119,9 @@ public class EmpresaServiceImp extends BaseServiceImp<Empresa,Long> implements E
             imagenEmpresaRepository.deleteImage(id);
 
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
-            return cloudinaryService.deleteImage(publicId, id);
+            ResponseEntity<String> cloudinaryResponse = cloudinaryService.deleteImage(publicId, id);
+            // Retornar la respuesta del servicio de Cloudinary junto con la respuesta del repositorio
+            return new ResponseEntity<>("{\"status\":\"SUCCESS\", \"message\":\"Imagen eliminada exitosamente.\"}", HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();

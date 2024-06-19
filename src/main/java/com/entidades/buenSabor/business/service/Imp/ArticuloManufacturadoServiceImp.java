@@ -201,10 +201,10 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
         try {
             // Eliminar la imagen de la base de datos usando su identificador
             imagenArticuloRepository.deleteImage(id);
-
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
-            return cloudinaryService.deleteImage(publicId, id);
-
+            ResponseEntity<String> cloudinaryResponse = cloudinaryService.deleteImage(publicId, id);
+            // Retornar la respuesta del servicio de Cloudinary junto con la respuesta del repositorio
+            return new ResponseEntity<>("{\"status\":\"SUCCESS\", \"message\":\"Imagen eliminada exitosamente.\"}", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante la eliminación

@@ -10,9 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ArticuloManufacturadoRepository extends BaseRepository<ArticuloManufacturado,Long> {
-    @Query("SELECT DISTINCT p FROM ArticuloManufacturado p " +
-            "LEFT JOIN FETCH p.imagenes i " +
-            "WHERE p.sucursal.id = :idSucursal AND p.eliminado = false AND (i IS NULL OR i.eliminado = false)")
+    @Query("SELECT DISTINCT p FROM ArticuloManufacturado p WHERE p.sucursal.id = :idSucursal AND p.eliminado = false")
     List<ArticuloManufacturado> manufacturados(@Param("idSucursal") Long idSucursal);
 
 }
