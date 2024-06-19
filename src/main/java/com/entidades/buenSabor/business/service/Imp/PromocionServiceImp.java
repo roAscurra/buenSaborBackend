@@ -174,7 +174,7 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
         try {
             // Eliminar la imagen de la base de datos usando su identificador
-            imagenPromocionRepository.deleteById(id);
+            imagenPromocionRepository.deleteImage(id);
 
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
             return cloudinaryService.deleteImage(publicId, id);
