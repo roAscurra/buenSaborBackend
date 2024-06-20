@@ -28,6 +28,5 @@ public class SucursalFullDto extends BaseDto {
 
     private DomicilioFullDto domicilio;
     private EmpresaCreateDto empresa;
-//    private Set<ImagenDto> imagenes;
-
+    private Set<ImagenDto> imagenes;
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public interface ArticuloInsumoRepository extends BaseRepository<ArticuloInsumo,Long> {
     @Query("SELECT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal AND p.esParaElaborar = true AND p.eliminado = false")
     List<ArticuloInsumo> insumosParaElaborar(@Param("idSucursal") Long idSucursal);
-    @Query("SELECT DISTINCT p FROM ArticuloInsumo p WHERE p.sucursal.id = :idSucursal AND p.eliminado = false")
+    @Query("SELECT DISTINCT p FROM ArticuloInsumo p JOIN FETCH p.imagenes i " +
+            "WHERE p.sucursal.id = :idSucursal AND p.eliminado = false AND i.eliminado = false")
     List<ArticuloInsumo> insumos(@Param("idSucursal") Long idSucursal);
 }

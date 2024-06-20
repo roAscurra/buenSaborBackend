@@ -154,10 +154,6 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idArticuloManufacturado) {
         List<String> urls = new ArrayList<>();
         var articuloManufacturado = baseRepository.getById(idArticuloManufacturado);
-        //por medio de un condicional limitamos la carga de imagenes a un maximo de 3 por aticulo
-        //en caso de tratar de excer ese limite arroja un codigo 413 con el mensaje La cantidad maxima de imagenes es 3
-        if(articuloManufacturado.getImagenes().size() >= 3)
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("La cantidad maxima de imagenes es 3");
         try {
             // Iterar sobre cada archivo recibido
             for (MultipartFile file : files) {

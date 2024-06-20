@@ -11,6 +11,11 @@ import java.util.List;
 @Repository
 public interface PromocionRepository extends BaseRepository<Promocion,Long>{
 
-    @Query("SELECT c FROM Promocion c JOIN c.sucursales s WHERE s.id = :idSucursal AND c.eliminado = false")
+    @Query("SELECT p FROM Promocion p " +
+            "LEFT JOIN FETCH p.imagenes i " +
+            "JOIN p.sucursales s " +
+            "WHERE s.id = :idSucursal " +
+            "AND p.eliminado = false " +
+            "AND (i IS NULL OR i.eliminado = false)")
     List<Promocion> promocionSucursal(@Param("idSucursal") Long idSucursal);
 }
