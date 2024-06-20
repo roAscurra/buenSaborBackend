@@ -28,6 +28,22 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
     private ArticuloInsumoRepository articuloInsumoRepository;
     @Autowired
     private ArticuloInsumoMapper articuloInsumoMapper;
+
+    @Override
+    public ArticuloInsumo update(ArticuloInsumo updatedArticulo, Long articuloId) {
+        ArticuloInsumo existingArticulo = articuloInsumoRepository.findById(articuloId)
+                .orElseThrow(() -> new RuntimeException("Articulo not found"));
+
+        // Actualizar los campos básicos del artículo
+        existingArticulo.setDenominacion(updatedArticulo.getDenominacion());
+        existingArticulo.setPrecioVenta(updatedArticulo.getPrecioVenta());
+        existingArticulo.setUnidadMedida(updatedArticulo.getUnidadMedida());
+        existingArticulo.setCategoria(updatedArticulo.getCategoria());
+        existingArticulo.setSucursal(updatedArticulo.getSucursal());
+
+        return articuloInsumoRepository.save(existingArticulo);
+    }
+
     @Override
     public List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal) {
         List<ArticuloInsumo> insumos = this.articuloInsumoRepository.insumosParaElaborar(idSucursal);
@@ -94,10 +110,6 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idArticuloInsumo) {
         List<String> urls = new ArrayList<>();
         var insumo = baseRepository.getById(idArticuloInsumo);
-        //por medio de un condicional limitamos la carga de imagenes a un maximo de 3 por aticulo
-        //en caso de tratar de excer ese limite arroja un codigo 413 con el mensaje La cantidad maxima de imagenes es 3
-        if(insumo.getImagenes().size() >= 3)
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("La cantidad maxima de imagenes es 3");
         try {
             // Iterar sobre cada archivo recibido
             for (MultipartFile file : files) {
@@ -134,7 +146,8 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante el proceso de subida
             return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<String> deleteImage(String publicId, Long id) {

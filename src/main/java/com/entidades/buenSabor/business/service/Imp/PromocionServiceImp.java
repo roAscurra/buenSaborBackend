@@ -133,11 +133,7 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idSucursal) {
         List<String> urls = new ArrayList<>();
-        var sucursal = baseRepository.getById(idSucursal);
-        //por medio de un condicional limitamos la carga de imagenes a un maximo de 3 por aticulo
-        //en caso de tratar de excer ese limite arroja un codigo 413 con el mensaje La cantidad maxima de imagenes es 3
-        if(sucursal.getImagenes().size() >= 3)
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("La cantidad maxima de imagenes es 3");
+        var promocion = baseRepository.getById(idSucursal);
         try {
             // Iterar sobre cada archivo recibido
             for (MultipartFile file : files) {
@@ -156,8 +152,8 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
                     return ResponseEntity.badRequest().build();
                 }
 
-                //Se asignan las imagenes a la empresa
-                sucursal.getImagenes().add(image);
+                //Se asignan las imagenes a la promocion
+                promocion.getImagenes().add(image);
                 //Se guarda la imagen en la base de datos
                 imagenPromocionRepository.save(image);
                 // Agregar la URL de la imagen a la lista de URLs subidas
@@ -165,7 +161,7 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
             }
 
             //se actualiza el insumo en la base de datos con las imagenes
-            baseRepository.save(sucursal);
+            baseRepository.save(promocion);
 
             // Convertir la lista de URLs a un objeto JSON y devolver como ResponseEntity con estado OK (200)
             return new ResponseEntity<>("{\"status\":\"OK\", \"urls\":" + urls + "}", HttpStatus.OK);
