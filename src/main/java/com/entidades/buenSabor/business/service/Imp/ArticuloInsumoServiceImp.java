@@ -36,11 +36,14 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
 
         // Actualizar los campos básicos del artículo
         existingArticulo.setDenominacion(updatedArticulo.getDenominacion());
+        existingArticulo.setPrecioCompra(updatedArticulo.getPrecioCompra());
         existingArticulo.setPrecioVenta(updatedArticulo.getPrecioVenta());
         existingArticulo.setUnidadMedida(updatedArticulo.getUnidadMedida());
         existingArticulo.setCategoria(updatedArticulo.getCategoria());
         existingArticulo.setSucursal(updatedArticulo.getSucursal());
-
+        existingArticulo.setStockActual(updatedArticulo.getStockActual());
+        existingArticulo.setStockMinimo(updatedArticulo.getStockMinimo());
+        existingArticulo.setStockMaximo(updatedArticulo.getStockMaximo());
         return articuloInsumoRepository.save(existingArticulo);
     }
 
