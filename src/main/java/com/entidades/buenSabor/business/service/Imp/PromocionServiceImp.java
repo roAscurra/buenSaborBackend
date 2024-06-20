@@ -7,9 +7,7 @@ import com.entidades.buenSabor.business.service.PromocionService;
 import com.entidades.buenSabor.domain.dto.pedido.PedidoFullDto;
 import com.entidades.buenSabor.domain.dto.promocion.PromocionFullDto;
 import com.entidades.buenSabor.domain.entities.*;
-import com.entidades.buenSabor.repositories.ImagenPromocionRepository;
-import com.entidades.buenSabor.repositories.PromocionRepository;
-import com.entidades.buenSabor.repositories.SucursalRepository;
+import com.entidades.buenSabor.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,10 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
 
     @Autowired
     PromocionRepository promocionRepository;
-
+    @Autowired
+    PromocionDetalleRepository promocionDetalleRepository;
+    @Autowired
+    ArticuloRepository articuloRepository;
     @Autowired
     SucursalRepository sucursalRepository;
     @Autowired
@@ -37,6 +38,7 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
         List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);
         return promocionMapper.promocionesToPromocionFullDto(promociones);
     }
+
     @Override
     public Promocion create(Promocion request) {
         // Guardar la instancia de Promocion en la base de datos para asegurarse de que esté gestionada por el EntityManager
@@ -44,7 +46,6 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
 
         Set<Sucursal> sucursales = promocionPersistida.getSucursales();
         Set<Sucursal> sucursalesPersistidas = new HashSet<>();
-
         // Verificar y asociar sucursales existentes
         if (sucursales != null && !sucursales.isEmpty()) {
             for (Sucursal sucursal : sucursales) {
@@ -61,7 +62,25 @@ public class PromocionServiceImp extends BaseServiceImp<Promocion, Long> impleme
             promocionPersistida.setSucursales(sucursalesPersistidas); // Establecer las sucursales asociadas a la promoción
             promocionRepository.save(promocionPersistida); // Guardar la promoción actualizada con las sucursales asociadas
         }
+        Set<PromocionDetalle> detalles = request.getPromocionDetalle();
+        Set<PromocionDetalle> detallesPersistidos = new HashSet<>();
 
+        if (detalles != null && !detalles.isEmpty()) {
+            for (PromocionDetalle detalle : detalles) {
+                Articulo articulo = detalle.getArticulo();
+                if (articulo == null || articulo.getId() == null) {
+                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                }
+                articulo = articuloRepository.findById(detalle.getArticulo().getId())
+                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
+                detalle.setArticulo(articulo);
+                PromocionDetalle savedDetalle = promocionDetalleRepository.save(detalle);
+                detallesPersistidos.add(savedDetalle);
+            }
+            request.setPromocionDetalle(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+        }
         return promocionPersistida;
     }
     @Override
