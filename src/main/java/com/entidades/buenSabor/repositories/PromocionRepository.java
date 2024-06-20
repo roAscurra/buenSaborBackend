@@ -16,7 +16,6 @@ public interface PromocionRepository extends BaseRepository<Promocion,Long>{
             "JOIN p.sucursales s " +
             "WHERE s.id = :idSucursal " +
             "AND p.eliminado = false " +
-            "AND (i IS NULL OR (i.eliminado = false AND i.id IS NULL))")
+            "AND (i IS NULL OR i.eliminado = false)")
     List<Promocion> promocionSucursal(@Param("idSucursal") Long idSucursal);
-
 }
