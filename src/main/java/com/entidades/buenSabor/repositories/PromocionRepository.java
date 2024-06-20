@@ -11,8 +11,12 @@ import java.util.List;
 @Repository
 public interface PromocionRepository extends BaseRepository<Promocion,Long>{
 
-    @Query("SELECT DISTINCT p FROM Promocion p " +
+    @Query("SELECT p FROM Promocion p " +
             "LEFT JOIN FETCH p.imagenes i " +
-            "WHERE p.sucursal.id = :idSucursal AND p.eliminado = false AND (i IS NULL OR i.eliminado = false)")
+            "JOIN p.sucursales s " +
+            "WHERE s.id = :idSucursal " +
+            "AND p.eliminado = false " +
+            "AND (i IS NULL OR (i.eliminado = false AND i.id IS NULL))")
     List<Promocion> promocionSucursal(@Param("idSucursal") Long idSucursal);
+
 }
