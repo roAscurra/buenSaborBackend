@@ -5,6 +5,7 @@ import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.business.service.EmpresaService;
 
 import com.entidades.buenSabor.business.service.SucursalService;
+import com.entidades.buenSabor.domain.entities.ArticuloInsumo;
 import com.entidades.buenSabor.domain.entities.Empresa;
 import com.entidades.buenSabor.domain.entities.ImagenArticulo;
 import com.entidades.buenSabor.domain.entities.ImagenEmpresa;
@@ -39,6 +40,18 @@ public class EmpresaServiceImp extends BaseServiceImp<Empresa,Long> implements E
         Empresa empresa = empresaRepository.findWithSucursalesById(idEmpresa);
         empresa.getSucursales().add(sucursalService.getById(idSucursal));
         return empresa;
+    }
+    @Override
+    public Empresa update(Empresa updatedEmpresa, Long idEmpresa) {
+        Empresa existingEmpresa = empresaRepository.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("Articulo not found"));
+
+        // Actualizar los campos básicos del artículo
+        existingEmpresa.setNombre(updatedEmpresa.getNombre());
+        existingEmpresa.setCuil(updatedEmpresa.getCuil());
+        existingEmpresa.setRazonSocial(updatedEmpresa.getRazonSocial());
+
+        return empresaRepository.save(existingEmpresa);
     }
 
     @Override
