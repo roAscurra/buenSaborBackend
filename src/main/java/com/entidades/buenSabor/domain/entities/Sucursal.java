@@ -66,10 +66,10 @@ public class Sucursal extends  Base{
     @ManyToOne
     private Empresa empresa;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_sucursal")
     @NotAudited
-    private Set<ImagenSucursal> imagenes;
+    private Set<ImagenSucursal> imagenes = new HashSet<>();
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sucursal")

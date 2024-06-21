@@ -30,8 +30,8 @@ public class Empresa extends Base{
     @JsonIgnore
     private Set<Sucursal> sucursales = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_empresa")
     @NotAudited
-    private Set<ImagenEmpresa> imagenes;
+    private Set<ImagenEmpresa> imagenes = new HashSet<>();
 }

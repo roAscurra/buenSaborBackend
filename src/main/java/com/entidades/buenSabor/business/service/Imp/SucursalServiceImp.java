@@ -6,10 +6,7 @@ import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
 import com.entidades.buenSabor.business.service.SucursalService;
 import com.entidades.buenSabor.domain.dto.sucursal.SucursalFullDto;
-import com.entidades.buenSabor.domain.entities.ImagenEmpresa;
-import com.entidades.buenSabor.domain.entities.ImagenSucursal;
-import com.entidades.buenSabor.domain.entities.Pedido;
-import com.entidades.buenSabor.domain.entities.Sucursal;
+import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.repositories.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -58,7 +55,17 @@ public class SucursalServiceImp extends BaseServiceImp<Sucursal,Long> implements
 
         return sucursalRepository.save(sucursal);
     }
+    @Override
+    public Sucursal update(Sucursal updatedEmpresa, Long idSucursal) {
+        Sucursal existingSucursal = sucursalRepository.findById(idSucursal)
+                .orElseThrow(() -> new RuntimeException("Articulo not found"));
 
+        // Actualizar los campos básicos del artículo
+        existingSucursal.setNombre(updatedEmpresa.getNombre());
+        existingSucursal.setHorarioApertura(updatedEmpresa.getHorarioApertura());
+        existingSucursal.setHorarioCierre(updatedEmpresa.getHorarioCierre());
+        return sucursalRepository.save(existingSucursal);
+    }
     @Override
     public Sucursal actualizarSucursal(Long id,Sucursal sucursal) {
         var sucursalActualizar = sucursalRepository.findById(sucursal.getId());
