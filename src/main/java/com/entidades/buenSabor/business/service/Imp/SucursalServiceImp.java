@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SucursalServiceImp extends BaseServiceImp<Sucursal,Long> implements SucursalService {
@@ -56,30 +53,57 @@ public class SucursalServiceImp extends BaseServiceImp<Sucursal,Long> implements
         return sucursalRepository.save(sucursal);
     }
     @Override
-    public Sucursal update(Sucursal updatedEmpresa, Long idSucursal) {
-        Sucursal existingSucursal = sucursalRepository.findById(idSucursal)
-                .orElseThrow(() -> new RuntimeException("Articulo not found"));
-
-        // Actualizar los campos básicos del artículo
-        existingSucursal.setNombre(updatedEmpresa.getNombre());
-        existingSucursal.setHorarioApertura(updatedEmpresa.getHorarioApertura());
-        existingSucursal.setHorarioCierre(updatedEmpresa.getHorarioCierre());
-        return sucursalRepository.save(existingSucursal);
-    }
-    @Override
-    public Sucursal actualizarSucursal(Long id,Sucursal sucursal) {
-        var sucursalActualizar = sucursalRepository.findById(sucursal.getId());
-        if(sucursalActualizar.isEmpty()){
-            throw new RuntimeException("No se puede actualizar el sucursal");
+    public Sucursal actualizarSucursal(Long id, Sucursal sucursal) {
+        // Buscar la sucursal existente en el repositorio
+        Optional<Sucursal> sucursalOptional = sucursalRepository.findById(id);
+        if (sucursalOptional.isEmpty()) {
+            throw new RuntimeException("No se puede encontrar la sucursal con el ID proporcionado: " + id);
         }
-        var domicilio = domicilioRepository.findById(sucursal.getDomicilio().getId());
-        domicilioRepository.save(sucursal.getDomicilio());
-        var empresa = empresaRepository.findById(sucursal.getEmpresa().getId());
 
-        sucursal.setDomicilio(domicilio.get());
-        sucursal.setEmpresa(empresa.get());
-        return sucursalRepository.save(sucursal);
+        // Obtener la sucursal existente del Optional
+        Sucursal sucursalExistente = sucursalOptional.get();
+
+        // Copiar los datos actualizados de la sucursal proporcionada a la existente
+        sucursalExistente.setNombre(sucursal.getNombre());
+        sucursalExistente.setHorarioApertura(sucursal.getHorarioApertura());
+        sucursalExistente.setHorarioCierre(sucursal.getHorarioCierre());
+        sucursalExistente.setEsCasaMatriz(sucursal.isEsCasaMatriz());
+
+        // Actualizar el domicilio y la empresa de la sucursal
+        Domicilio domicilio = domicilioRepository.findById(sucursal.getDomicilio().getId())
+                .orElseThrow(() -> new RuntimeException("No se puede encontrar el domicilio con el ID proporcionado: " + sucursal.getDomicilio().getId()));
+        domicilioRepository.save(sucursal.getDomicilio());
+        Empresa empresa = empresaRepository.findById(sucursal.getEmpresa().getId())
+                .orElseThrow(() -> new RuntimeException("No se puede encontrar la empresa con el ID proporcionado: " + sucursal.getEmpresa().getId()));
+        sucursalExistente.setDomicilio(domicilio);
+        sucursalExistente.setEmpresa(empresa);
+
+        // Eliminar las imágenes que ya no se necesitan
+        Set<ImagenSucursal> nuevasImagenes = sucursal.getImagenes();
+        Set<ImagenSucursal> imagenesAEliminar = new HashSet<>(sucursalExistente.getImagenes());
+        imagenesAEliminar.removeAll(nuevasImagenes);
+        imagenesAEliminar.forEach(imagen -> imagenSucursalRepository.delete(imagen));
+        // Loggear las imágenes que se van a eliminar
+        logger.info("Imágenes a eliminar:");
+        imagenesAEliminar.forEach(imagen -> logger.info("ID: {}, URL: {}", imagen.getId(), imagen.getUrl()));
+
+        // Verificar y guardar las nuevas imágenes
+        Set<ImagenSucursal> imagenesAGuardar = new HashSet<>();
+        for (ImagenSucursal imagen : nuevasImagenes) {
+            // Verificar si el ID y la URL no son nulos
+            if (imagen.getId() != null && imagen.getUrl() != null) {
+                imagenesAGuardar.add(imagen);
+            }
+        }
+        sucursalExistente.setImagenes(imagenesAGuardar);
+        // Loggear las imágenes de la sucursal
+        logger.info("Imágenes de la sucursal:");
+        imagenesAGuardar.forEach(imagen -> logger.info("ID: {}, URL: {}", imagen.getId(), imagen.getUrl()));
+
+        // Guardar la sucursal actualizada en el repositorio
+        return sucursalRepository.save(sucursalExistente);
     }
+
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesBySucursalId(Long id) {
         try {
