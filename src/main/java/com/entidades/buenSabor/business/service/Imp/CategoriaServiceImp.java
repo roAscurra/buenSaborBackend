@@ -40,6 +40,27 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
         return categoriaCreateDTOs;
     }
     @Override
+    public List<CategoriaCreateDto> categoriaInsumoSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaInsumosSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }@Override
+    public List<CategoriaCreateDto> categoriaManufacturadoSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaManufacturadosSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }
+    @Override
     public Categoria create(Categoria request) {
         // Guardar la instancia de Categoria en la base de datos para asegurarse de que esté gestionada por el EntityManager
         Categoria categoriaPersistida = categoriaRepository.save(request);
@@ -105,11 +126,13 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
                     Categoria subcategoriaBd = categoriaRepository.findById(subcategoria.getId())
                             .orElseThrow(() -> new RuntimeException("La subcategoría con id " + subcategoria.getId() + " no se ha encontrado"));
                     subcategoriaBd.setDenominacion(subcategoria.getDenominacion());
+                    subcategoriaBd.setEsInsumo(request.isEsInsumo());
                     subcategoriaBd.setParent(categoria); // Establecer la relación padre-hijo
                     subcategoriasPersistidas.add(subcategoriaBd);
                 } else {
                     // Si la subcategoría es nueva, solo agregarla a la categoría
                     subcategoria.setParent(categoria); // Establecer la relación padre-hijo
+                    subcategoria.setEsInsumo(request.isEsInsumo());
                     subcategoriasPersistidas.add(subcategoria);
                 }
             }
@@ -117,6 +140,7 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
         }
 
         // Actualizar otras propiedades de la categoría si es necesario
+        categoria.setEsInsumo(request.isEsInsumo());
         categoria.setDenominacion(request.getDenominacion());
 
         // Guardar la categoría actualizada en la base de datos

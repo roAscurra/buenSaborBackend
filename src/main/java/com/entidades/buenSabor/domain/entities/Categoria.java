@@ -23,6 +23,7 @@ import java.util.Set;
 @Audited
 public class Categoria extends Base {
     private String denominacion;
+    private boolean esInsumo;
 
     // Relación muchos a uno con la misma entidad (padre)
     @ManyToOne

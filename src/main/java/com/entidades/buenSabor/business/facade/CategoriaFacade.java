@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CategoriaFacade extends BaseFacade<CategoriaCreateDto, Long> {
     List<CategoriaCreateDto> categoriaSucursal(Long idSucursal);
+    List<CategoriaCreateDto> categoriaInsumoSucursal(Long idSucursal);
+    List<CategoriaCreateDto> categoriaManufacturadoSucursal(Long idSucursal);
 
 }

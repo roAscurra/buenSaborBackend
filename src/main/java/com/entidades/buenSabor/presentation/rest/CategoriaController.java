@@ -23,6 +23,14 @@ public class CategoriaController extends BaseControllerImp<Categoria, CategoriaC
     public List<CategoriaCreateDto> getCategoriasPorSucursal(@PathVariable Long idSucursal) {
         return this.facade.categoriaSucursal(idSucursal);
     }
+    @GetMapping("/sucursal/insumo/{idSucursal}")
+    public List<CategoriaCreateDto> getCategoriasInsumoPorSucursal(@PathVariable Long idSucursal) {
+        return this.facade.categoriaInsumoSucursal(idSucursal);
+    }
+    @GetMapping("/sucursal/manufacturado/{idSucursal}")
+    public List<CategoriaCreateDto> getCategoriasManufacturadoPorSucursal(@PathVariable Long idSucursal) {
+        return this.facade.categoriaManufacturadoSucursal(idSucursal);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaCreateDto> getById(@PathVariable Long id){
         return super.getById(id);
