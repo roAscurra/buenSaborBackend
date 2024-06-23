@@ -24,4 +24,10 @@ public class CategoriaFacadeImp extends BaseFacadeImp<Categoria, CategoriaCreate
     public List<CategoriaCreateDto> categoriaSucursal(Long idSucursal) {
         return this.categoriaService.categoriaSucursal(idSucursal);
     }
+    public List<CategoriaCreateDto> categoriaInsumoSucursal(Long idSucursal) {
+        return this.categoriaService.categoriaInsumoSucursal(idSucursal);
+    }
+    public List<CategoriaCreateDto> categoriaManufacturadoSucursal(Long idSucursal) {
+        return this.categoriaService.categoriaManufacturadoSucursal(idSucursal);
+    }
 }

@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CategoriaService extends BaseService<Categoria, Long> {
     List<CategoriaCreateDto> categoriaSucursal(Long idSucursal);
+    List<CategoriaCreateDto> categoriaInsumoSucursal(Long idSucursal);
+    List<CategoriaCreateDto> categoriaManufacturadoSucursal(Long idSucursal);
 
 }

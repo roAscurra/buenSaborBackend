@@ -36,6 +36,7 @@ public class ArticuloInsumoServiceImp extends BaseServiceImp<ArticuloInsumo, Lon
 
         // Actualizar los campos básicos del artículo
         existingArticulo.setDenominacion(updatedArticulo.getDenominacion());
+        existingArticulo.setEsParaElaborar(updatedArticulo.getEsParaElaborar());
         existingArticulo.setPrecioCompra(updatedArticulo.getPrecioCompra());
         existingArticulo.setPrecioVenta(updatedArticulo.getPrecioVenta());
         existingArticulo.setUnidadMedida(updatedArticulo.getUnidadMedida());
