@@ -143,6 +143,31 @@ public class CategoriaServiceImp extends BaseServiceImp<Categoria, Long> impleme
         categoria.setEsInsumo(request.isEsInsumo());
         categoria.setDenominacion(request.getDenominacion());
 
+        // Obtener todas las sucursales asociadas a la categoria
+        Set<Sucursal> sucursalesActuales = categoria.getSucursales();
+
+        // Eliminar las relaciones entre las sucursales y la promoción
+        for (Sucursal sucursal : sucursalesActuales) {
+            sucursal.getCategorias().remove(categoria);
+            sucursalRepository.save(sucursal); // Guardar la sucursal actualizada
+        }
+
+        // Limpiar todas las sucursales asociadas a la promoción
+        categoria.getSucursales().clear();
+
+        // Agregar las nuevas sucursales proporcionadas en la solicitud
+        Set<Sucursal> sucursales = request.getSucursales();
+        Set<Sucursal> sucursalesPersistidas = new HashSet<>();
+
+        if (sucursales != null && !sucursales.isEmpty()) {
+            for (Sucursal sucursal : sucursales) {
+                Sucursal sucursalBd = sucursalRepository.findById(sucursal.getId())
+                        .orElseThrow(() -> new RuntimeException("La sucursal con id " + sucursal.getId() + " no se ha encontrado"));
+                sucursalBd.getCategorias().add(categoria);
+                sucursalesPersistidas.add(sucursalBd);
+            }
+            categoria.setSucursales(sucursalesPersistidas);
+        }
         // Guardar la categoría actualizada en la base de datos
         return categoriaRepository.save(categoria);
     }
