@@ -113,6 +113,8 @@ public class ArticuloManufacturadoServiceImp extends BaseServiceImp<ArticuloManu
 
         // Actualizar los campos del artículo manufacturado existente
         existingArticulo.setDenominacion(request.getDenominacion());
+        existingArticulo.setCategoria(request.getCategoria());
+        existingArticulo.setUnidadMedida(request.getUnidadMedida());
         existingArticulo.setDescripcion(request.getDescripcion());
         existingArticulo.setPrecioVenta(request.getPrecioVenta());
         existingArticulo.setTiempoEstimadoMinutos(request.getTiempoEstimadoMinutos());
